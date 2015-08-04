@@ -1,4 +1,4 @@
-# iTerm2-tools
+# iTerm2 Tools
 
 iTerm2 tools for Python
 
