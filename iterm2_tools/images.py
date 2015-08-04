@@ -20,5 +20,5 @@ def iterm2_display_image_file(fn):
 
     A newline is not printed.
     """
-    with open(os.path.realpath(os.path.expanduser(fn)), 'br') as f:
+    with open(os.path.realpath(os.path.expanduser(fn)), 'rb') as f:
         sys.stdout.write(iterm2_image_bytes(f.read(), filename=fn))
