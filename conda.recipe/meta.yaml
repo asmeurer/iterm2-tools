@@ -1,0 +1,60 @@
+package:
+  name: iterm2-tools
+  version: "1.0"
+
+source:
+  fn: iterm2-tools-1.0.tar.gz
+  url: https://pypi.python.org/packages/source/i/iterm2-tools/iterm2-tools-1.0.tar.gz
+  md5: c17c2747efcb6f1e63a6355ee3d8cc9f
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
+# build:
+  # noarch_python: True
+  # preserve_egg_dir: True
+  # entry_points:
+    # Put any entry points (scripts to be generated automatically) here. The
+    # syntax is module:function.  For example
+    #
+    # - iterm2-tools = iterm2-tools:main
+    #
+    # Would create an entry point called iterm2-tools that calls iterm2-tools.main()
+
+
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  # number: 1
+
+requirements:
+  build:
+    - python
+
+  run:
+    - python
+
+test:
+  # Python imports
+  imports:
+    - iterm2_tools
+
+  # commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: https://github.com/asmeurer/iterm2-tools
+  license: MIT
+  summary: 'iTerm2 tools.'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
