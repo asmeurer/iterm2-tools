@@ -1,0 +1,2 @@
+include versioneer.py
+include iterm2_tools/_version.py
