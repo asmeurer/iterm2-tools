@@ -34,6 +34,20 @@ def test_session_fail():
     print("command output 3", file=sys.stderr)
     after_output(1)
 
+
+def test_session_prompt_newline():
+    before_prompt()
+    print("PROMPT\n$ ", end='')
+    after_prompt()
+
+    print("command")
+
+    before_output()
+    print("command output 1")
+    print("command output 2")
+    print("command output 3", file=sys.stderr)
+    after_output(0)
+
 def test_after_output_range():
     after_output(0)
     after_output(255)
@@ -43,10 +57,12 @@ def test_after_output_range():
 if __name__ == '__main__':
     test_session()
     test_session_fail()
+    test_session_prompt_newline()
+
     # In case this file is run in a shell that itself has shell integration
-    # enabled, some dummy output
+    # enabled, some dummy output.
     before_prompt()
-    print("DUMMY OUTPUT, IGNORE$ ", end='')
+    print("DUMMY PROMPT, IGNORE$ ", end='')
     after_prompt()
     print("dummy command")
     before_output()
