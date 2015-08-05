@@ -7,6 +7,8 @@ https://github.com/gnachman/iterm2-website/tree/master/source/misc for example
 implementations, and https://iterm2.com/shell_integration.html for a list of
 what this lets you do in iTerm2.
 """
+from __future__ import print_function, division, absolute_import
+
 import sys
 
 # The "FinalTerm" shell sequences

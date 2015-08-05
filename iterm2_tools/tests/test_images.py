@@ -1,3 +1,5 @@
+from __future__ import print_function, division, absolute_import
+
 import os
 
 from iterm2_tools import image_bytes, display_image_file
