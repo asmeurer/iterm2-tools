@@ -1,11 +1,11 @@
 package:
   name: iterm2-tools
-  version: "1.0"
+  version: "2.0"
 
 source:
-  fn: iterm2-tools-1.0.tar.gz
-  url: https://pypi.python.org/packages/source/i/iterm2-tools/iterm2-tools-1.0.tar.gz
-  md5: c17c2747efcb6f1e63a6355ee3d8cc9f
+  fn: iterm2-tools-2.0.tar.gz
+  url: https://pypi.python.org/packages/source/i/iterm2-tools/iterm2-tools-2.0.tar.gz
+  md5: 9368220f6ab45e5a4b34e3d0ebeb34d3
 #  patches:
    # List any patch files here
    # - fix.patch
