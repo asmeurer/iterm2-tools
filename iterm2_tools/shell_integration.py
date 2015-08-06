@@ -38,6 +38,7 @@ readline's character counting.
 from __future__ import print_function, division, absolute_import
 
 import sys
+from contextlib import contextmanager
 
 # The "FinalTerm" shell sequences
 
@@ -88,3 +89,42 @@ def after_output(command_status):
     if command_status not in range(256):
         raise ValueError("command_status must be an integer in the range 0-255")
     sys.stdout.write(AFTER_OUTPUT.format(command_status=command_status))
+
+@contextmanager
+def Prompt():
+    """
+    iTerm2 shell integration prompt context manager
+
+    Use like:
+
+        with Prompt():
+            print("Prompt:", end='')
+    """
+    before_prompt()
+    yield
+    after_prompt()
+
+class Output(object):
+    """
+    iTerm2 shell integration output context manager
+
+    Use like:
+
+        with Output() as o:
+            print("output")
+            o.set_command_status(status)
+
+    The command status should be in the range 0-255. The default status is 0.
+    """
+    def __init__(self):
+        self.command_status = 0
+
+    def set_command_status(self, status):
+        self.command_status = status
+
+    def __enter__(self):
+        before_output()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        after_output(self.command_status)
