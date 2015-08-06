@@ -1,3 +1,13 @@
+2.0
+---
+
+- Add iterm2_tools.shell_integration, with some functions for working with
+  iTerm2's shell integration.
+
+# Breaking changes:
+
+- Remove iterm2_ from iterm2_tools.images function names.
+
 1.0
 ---
 
