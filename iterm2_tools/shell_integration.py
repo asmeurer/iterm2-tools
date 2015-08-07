@@ -30,10 +30,44 @@ while True:
 
 (here return_val should be in the range 0-255).
 
-Note that it is recommended to use the functions (like before_prompt()) rather
-than the variables (like BEFORE_PROMPT) directly, as variables may break
-readline's character counting.
+Note that it is recommended to use the functions (like before_prompt()) or the
+context managers (like "with Prompt()") rather than the variables (like
+BEFORE_PROMPT) directly, as variables may break readline's character counting.
 
+It may be preferable to use the context managers rather than the functions,
+in which case, the REPL would be:
+
+while True:
+    with Prompt():
+        print("input> ", end='')
+    command = input()
+    with Output() as o:
+        return_val = run_command(command)
+        o.set_command_status(return_val)
+
+Notes about iTerm2:
+
+- iTerm2 assumes that the prompt sequences will be presented in a reasonable
+  way. Using the context managers should prevent most issues.
+
+- The text that comes after the prompt before the first newline is read as a
+  command. If there is no command, or the command is just whitespace, the
+  output is effectively ignored (the same as if two before/after prompt
+  sequences were performed without any output sequence).
+
+- iTerm2 does not support capturing multiline commands, although the output
+  won't include any part of the command if before_output() is used correctly.
+
+- iTerm2 expects there to be nothing between AFTER_OUTPUT and BEFORE_PROMPT,
+  except possibly more shell sequences. At the time of this writing, iTerm2's
+  "Select Output of Last Command" actually selects the text between
+  BEFORE_OUTPUT and BEFORE_PROMPT, not BEFORE_OUTPUT and AFTER_OUTPUT as one
+  would expect.
+
+- Multiline prompts are supported just fine, although the arrow will always be
+  presented on the first line. It is not recommended to attempt to change this
+  by not including part of the prompt between the prompt sequences (see the
+  previous bullet point).
 """
 from __future__ import print_function, division, absolute_import
 
