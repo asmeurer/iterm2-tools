@@ -1,3 +1,9 @@
+2.1
+---
+
+- Add context managers to shell_integration.
+- Add an example REPL showing how to use the shell integration.
+
 2.0
 ---
 
