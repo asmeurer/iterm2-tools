@@ -3,6 +3,7 @@
 
 - Add context managers to shell_integration.
 - Add an example REPL showing how to use the shell integration.
+- Rename image_bytes to display_image_bytes
 
 2.0 (2015-08-06)
 ----------------
