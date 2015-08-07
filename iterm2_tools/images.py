@@ -8,6 +8,12 @@ import base64
 IMAGE_CODE = '\033]1337;File={file};inline={inline};size={size}:{base64_img}\a'
 
 def image_bytes(b, filename=None, inline=1):
+    """
+    Display the image given by the bytes b in the terminal.
+
+    If filename=None the filename defaults to "Unnamed file".
+
+    """
     data = {
         'file': base64.b64encode((filename or 'Unnamed file').encode('utf-8')).decode('ascii'),
         'inline': inline,
