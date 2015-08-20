@@ -32,18 +32,38 @@ while True:
 
 Note that it is recommended to use the functions (like before_prompt()) or the
 context managers (like "with Prompt()") rather than the variables (like
-BEFORE_PROMPT) directly, as variables may break readline's character counting.
+BEFORE_PROMPT) directly. These print the codes directly to stdout, avoiding
+potential issues with character counting.
 
 It may be preferable to use the context managers rather than the functions,
 in which case, the REPL would be:
 
-while True:
-    with Prompt():
-        print("input> ", end='')
-    command = input()
-    with Output() as o:
-        return_val = run_command(command)
-        o.set_command_status(return_val)
+    while True:
+        with Prompt():
+            print("input> ", end='')
+        command = input() # raw_input() in Python 2
+        with Output() as o:
+            return_val = run_command(command)
+            o.set_command_status(return_val)
+
+However, in many cases, it is impossible to run functions before and after the
+prompt, e.g., when the prompt text is passed to (raw_)input() directly. In
+that case, you should use the codes directly, wrapped with
+readline_invisible(), like:
+
+    while True:
+        command = input(
+            readline_invisible(BEFORE_PROMPT) +
+            "input> " +
+            readline_invisible(AFTER_PROMPT
+        ) # raw_input() in Python 2
+        with Output() as o:
+            return_val = run_command(command)
+            o.set_command_status(return_val)
+
+Using readline_invisible() is important as it tells readline to not count the
+codes as visible text. Without this, readline's editing and history commands
+will truncate text.
 
 Notes about iTerm2:
 
@@ -68,6 +88,7 @@ Notes about iTerm2:
   presented on the first line. It is not recommended to attempt to change this
   by not including part of the prompt between the prompt sequences (see the
   previous bullet point).
+
 """
 from __future__ import print_function, division, absolute_import
 
@@ -84,6 +105,7 @@ AFTER_OUTPUT = '\033]133;D;{command_status}\a' # command_status is the command s
 # iTerm2 specific sequences. All optional.
 
 SET_USER_VAR = '\033]1337;SetUserVar={user_var_key}={user_var_value}\a'
+
 # The current shell integration version is 1. We don't use this as an outdated
 # shell integration version would only prompt the user to upgrade the
 # integration that comes with iTerm2.
@@ -95,6 +117,13 @@ SHELL_INTEGRATION_VERSION = '\033]1337;ShellIntegrationVersion={shell_integratio
 # should allow users to set remote_host_hostname in case DNS is slow.
 REMOTE_HOST = '\033]1337;RemoteHost={remote_host_username}@{remote_host_hostname}\a'
 CURRENT_DIR = '\033]1337;CurrentDir={current_dir}\a'
+
+def readline_invisible(code):
+    """
+    Wrap `code` with the special characters to tell readline that it is
+    invisible.
+    """
+    return '\001%s\002' % code
 
 def before_prompt():
     """
@@ -118,7 +147,7 @@ def after_output(command_status):
     """
     Shell sequence to be run after the command output.
 
-    The command_status should be in the range 0-255.
+    The `command_status` should be in the range 0-255.
     """
     if command_status not in range(256):
         raise ValueError("command_status must be an integer in the range 0-255")

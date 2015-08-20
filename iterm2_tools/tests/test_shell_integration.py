@@ -4,8 +4,9 @@ import sys
 
 from pytest import raises
 
-from iterm2_tools.shell_integration import (before_prompt, after_prompt,
-    before_output, after_output, Prompt, Output)
+from iterm2_tools.shell_integration import (BEFORE_PROMPT, before_prompt,
+    after_prompt, before_output, after_output, Prompt, Output,
+    readline_invisible)
 
 def test_session():
     before_prompt()
@@ -115,6 +116,9 @@ def test_Output():
     with Output() as o:
         print("Output")
         o.set_command_status(1)
+
+def test_readline_invisible():
+    assert readline_invisible(BEFORE_PROMPT) == "\001" + BEFORE_PROMPT + "\002"
 
 if __name__ == '__main__':
     test_session()
