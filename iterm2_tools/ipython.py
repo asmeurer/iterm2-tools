@@ -9,9 +9,11 @@ To load, use
 
 To load every time IPython starts, add
 
-    c.TerminalIPythonApp.extensions = [
-        'iterm2_tools.ipython',
-    ]
+    try:
+        import iterm2_tools.ipython
+        c.TerminalIPythonApp.extensions.append('iterm2_tools.ipython')
+    except ImportError:
+        pass
 
 to your IPython configuration file.
 
