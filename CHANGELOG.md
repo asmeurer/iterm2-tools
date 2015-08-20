@@ -1,7 +1,8 @@
-2.1.1 (unreleased)
+2.2 (unreleased)
 ------------------
 
 - Rename image_bytes to display_image_bytes
+- Add readline_invisible() to shell_integration
 
 2.1 (2015-08-06)
 ----------------
