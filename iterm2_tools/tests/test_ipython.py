@@ -11,6 +11,8 @@ from IPython.testing.tools import get_ipython_cmd
 def test_IPython():
     ipython = get_ipython_cmd()
 
+    SMM = b'\x1b[?1034h'
+
     commands = b"""\
 1
 
@@ -27,7 +29,10 @@ f()
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     stdout, stderr = p.communicate(input=commands)
-    assert stdout == b"""
+    # Different versions of readline do different things with the smm code.
+    stdout = stdout.replace(SMM, b'').strip()
+
+    assert stdout == b"""\
 \x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x021\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02\x1b[0;31mOut[\x1b[1;31m1\x1b[0;31m]: \x1b[0m1
 
 \x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x022\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
@@ -47,7 +52,7 @@ f()
 \x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x025\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
 \x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
 \x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
-Do you really want to exit ([y]/n)? \n\x1b[?1034h\
+Do you really want to exit ([y]/n)?\
 """
     assert stderr == b''
 
@@ -71,7 +76,10 @@ Do you really want to exit ([y]/n)? \n\x1b[?1034h\
     #   before_output) does not need it because it is not in the prompt.
 
     stdout, stderr = p.communicate(input=commands)
-    assert stdout == b"""
+    # Different versions of readline do different things with the smm code.
+    stdout = stdout.replace(SMM, b'').strip()
+
+    assert stdout == b"""\
 \x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x021\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02\x1b]133;C\x07                                \x1b[0;31mOut[\x1b[1;31m1\x1b[0;31m]: \x1b[0m1
 
 \x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x022\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02
@@ -91,7 +99,7 @@ Do you really want to exit ([y]/n)? \n\x1b[?1034h\
 \x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x025\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02\x1b]133;C\x07
 \x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02
 \x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02
-Do you really want to exit ([y]/n)? \n\x1b[?1034h\
+Do you really want to exit ([y]/n)?\
 """
     assert stderr == b''
 
