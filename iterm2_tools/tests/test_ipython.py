@@ -4,11 +4,10 @@ import subprocess
 import sys
 import os
 
-def test_IPython():
-    ipython = os.path.join(sys.prefix, 'bin', 'ipython')
-    if not os.path.exists(ipython):
-        raise Exception("IPython must be installed in %s to run the IPython tests" % os.path.join(sys.prefix, 'bin'))
+from IPython.testing.tools import get_ipython_cmd
 
+def test_IPython():
+    ipython = get_ipython_cmd()
 
     commands = b"""\
 1
