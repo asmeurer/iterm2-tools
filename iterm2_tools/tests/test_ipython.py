@@ -20,8 +20,8 @@ def f():
 f()
 
 """
-    p = subprocess.Popen([ipython, '--quick', '--colors=LightBG', '--no-banner'],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(ipython + ['--quick', '--colors=LightBG', '--no-banner'],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     stdout, stderr = p.communicate(input=commands)
     assert (stdout, stderr) == (b'', b'')
