@@ -57,7 +57,9 @@ Do you really want to exit ([y]/n)? \n\x1b[?1034h\
         stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     # Things of note here:
-    # - There are 8 prompts (3 with no input, the second, sixth, and eighth).
+    # - There are 8 prompts (3 with no input, the second, sixth, and
+    #   seventh). The sixth is empty because f() returns None, and the eighth
+    #   is not empty because of the exit confirmation.
     # - The color codes are outside of the iterm2 codes. This is because of
     #   the way IPython handles color codes. See the note in ipython.py.
     # - The D code (after_output) should always go right before the A code
@@ -125,3 +127,17 @@ Do you really want to exit ([y]/n)? \n\x1b[?1034h\
         AFTER_OUTPUT0,
         AFTER_OUTPUT0,
     ]
+
+    AFTER_PROMPT_RE = re.escape(AFTER_PROMPT)
+    BEFORE_OUTPUT_RE = re.escape(BEFORE_OUTPUT)
+    AFTER_PROMPT_OR_BEFORE_OUTPUT_RE = re.compile('(%s|%s)' % (AFTER_PROMPT_RE, BEFORE_OUTPUT_RE))
+    assert re.findall(AFTER_PROMPT_OR_BEFORE_OUTPUT_RE, stdout) == [
+        AFTER_PROMPT, BEFORE_OUTPUT, # non-empty prompt
+        AFTER_PROMPT,                # empty prompt
+        AFTER_PROMPT, BEFORE_OUTPUT,
+        AFTER_PROMPT, BEFORE_OUTPUT,
+        AFTER_PROMPT, BEFORE_OUTPUT,
+        AFTER_PROMPT, BEFORE_OUTPUT,
+        AFTER_PROMPT,
+        AFTER_PROMPT,
+        ]
