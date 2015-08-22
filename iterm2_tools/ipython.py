@@ -102,6 +102,11 @@ def load_ipython_extension(ipython):
     ipython.prompt_manager.lazy_evaluate_fields['after_output'] = ipython_after_output
 
     orig_in_template = ipython.prompt_manager.in_template
+    # Heads up: The color codes from the default color themes (Linux and
+    # LightBG) are not part of the in_template. Rather, they are added by
+    # IPython around the in_template when it renders the prompt, meaning they
+    # won't be between before_prompt and after_prompt. I don't know of any
+    # issues caused by this, but it's worth knowing.
     ipython.prompt_manager.in_template = ("{after_output}{before_prompt}" + orig_in_template +
         "{after_prompt}")
 
