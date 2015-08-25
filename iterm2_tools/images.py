@@ -26,6 +26,13 @@ def display_image_bytes(b, filename=None, inline=1):
         }
     return (IMAGE_CODE.format(**data))
 
+# Backwards compatibility
+def image_bytes(b, filename=None, inline=1):
+    """
+    **DEPRECATED**: Use display_image_bytes.
+    """
+    return display_image_file(b, filename=filename, inline=inline)
+
 def display_image_file(fn):
     """
     Display an image in the terminal.
@@ -34,6 +41,3 @@ def display_image_file(fn):
     """
     with open(os.path.realpath(os.path.expanduser(fn)), 'rb') as f:
         sys.stdout.write(display_image_bytes(f.read(), filename=fn))
-
-# Backwards compatibility
-image_bytes = display_image_bytes
