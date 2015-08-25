@@ -7,5 +7,6 @@ python:
   - "3.5-dev"
   - "nightly"
 
-# command to run tests
+install: "pip install ipython"
+
 script: py.test
