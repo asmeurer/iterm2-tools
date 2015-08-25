@@ -3,11 +3,11 @@ IPython shell integration extension
 
 Enables iTerm2 shell integration in the IPython shell.
 
-To load, use
+To load, use::
 
     %load_ext iterm2_tools.ipython
 
-To load every time IPython starts, add
+To load every time IPython starts, add::
 
     try:
         import iterm2_tools.ipython
@@ -35,7 +35,7 @@ Some notes about this:
   IPython as not invisible, causing the "Out" prompt to indent several
   characters (however, aside from this bug, it should work fine).
 
-- This code adds a `set_custom_exc` handler to IPython to check the command
+- This code adds a ``set_custom_exc`` handler to IPython to check the command
   status. IPython currently only supports one exc_handler at a time, so this
   may break other code that also uses this functionality.
 
