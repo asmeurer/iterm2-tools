@@ -7,6 +7,7 @@
 - Add iterm2_tools.ipython IPython extension to enable shell integration in
   IPython.
 - Enable Travis CI tests.
+- Add Sphinx documentation hosted at https://iterm2-tools.readthedocs.org/.
 
 2.1 (2015-08-06)
 ----------------
