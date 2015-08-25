@@ -10,33 +10,33 @@ what this lets you do in iTerm2.
 Usage
 =====
 
-Say you have a basic REPL like
+Say you have a basic REPL like::
 
-input> run-command
-command output
+    input> run-command
+    command output
 
-where "input> " is the prompt, "run-command" is the command typed by the user,
-and "command output" is the output of run-command. The basic REPL (in Python
-3), would be
+where ``input>`` is the prompt, ``run-command`` is the command typed by the user,
+and ``command output`` is the output of ``run-command``. The basic REPL (in Python
+3), would be::
 
-while True:
-    before_prompt()
-    print("input> ", end='')
-    after_prompt()
-    command = input()
-    before_output()
-    return_val = run_command(command)
-    after_output(return_val)
+    while True:
+        before_prompt()
+        print("input> ", end='')
+        after_prompt()
+        command = input()
+        before_output()
+        return_val = run_command(command)
+        after_output(return_val)
 
-(here return_val should be in the range 0-255).
+(here ``return_val`` should be in the range 0-255).
 
-Note that it is recommended to use the functions (like before_prompt()) or the
-context managers (like "with Prompt()") rather than the variables (like
-BEFORE_PROMPT) directly. These print the codes directly to stdout, avoiding
+Note that it is recommended to use the functions (like ``before_prompt()``) or the
+context managers (like ``with Prompt()``) rather than the variables (like
+``BEFORE_PROMPT``) directly. These print the codes directly to stdout, avoiding
 potential issues with character counting.
 
 It may be preferable to use the context managers rather than the functions,
-in which case, the REPL would be:
+in which case, the REPL would be::
 
     while True:
         with Prompt():
@@ -47,9 +47,9 @@ in which case, the REPL would be:
             o.set_command_status(return_val)
 
 However, in many cases, it is impossible to run functions before and after the
-prompt, e.g., when the prompt text is passed to (raw_)input() directly. In
+prompt, e.g., when the prompt text is passed to ``(raw_)input()`` directly. In
 that case, you should use the codes directly, wrapped with
-readline_invisible(), like:
+``readline_invisible()``, like::
 
     while True:
         command = input(
@@ -61,7 +61,7 @@ readline_invisible(), like:
             return_val = run_command(command)
             o.set_command_status(return_val)
 
-Using readline_invisible() is important as it tells readline to not count the
+Using ``readline_invisible()`` is important as it tells readline to not count the
 codes as visible text. Without this, readline's editing and history commands
 will truncate text.
 
@@ -75,14 +75,15 @@ Notes about iTerm2:
   output is effectively ignored (the same as if two before/after prompt
   sequences were performed without any output sequence).
 
-- iTerm2 does not support capturing multiline commands, although the output
-  won't include any part of the command if before_output() is used correctly.
+- iTerm2 does  not support capturing  multiline commands, although  the output
+  won't  include  any part  of  the  command  if ``before_output()``  is  used
+  correctly.
 
-- iTerm2 expects there to be nothing between AFTER_OUTPUT and BEFORE_PROMPT,
-  except possibly more shell sequences. At the time of this writing, iTerm2's
-  "Select Output of Last Command" actually selects the text between
-  BEFORE_OUTPUT and BEFORE_PROMPT, not BEFORE_OUTPUT and AFTER_OUTPUT as one
-  would expect.
+- iTerm2 expects there to be nothing between ``AFTER_OUTPUT`` and
+  ``BEFORE_PROMPT``, except possibly more shell sequences. At the time of this
+  writing, iTerm2's "Select Output of Last Command" actually selects the text
+  between ``BEFORE_OUTPUT`` and ``BEFORE_PROMPT``, not ``BEFORE_OUTPUT`` and
+  ``AFTER_OUTPUT`` as one would expect.
 
 - Multiline prompts are supported just fine, although the arrow will always be
   presented on the first line. It is not recommended to attempt to change this
@@ -120,7 +121,7 @@ CURRENT_DIR = '\033]1337;CurrentDir={current_dir}\a'
 
 def readline_invisible(code):
     """
-    Wrap `code` with the special characters to tell readline that it is
+    Wrap ``code`` with the special characters to tell readline that it is
     invisible.
     """
     return '\001%s\002' % code
@@ -147,7 +148,7 @@ def after_output(command_status):
     """
     Shell sequence to be run after the command output.
 
-    The `command_status` should be in the range 0-255.
+    The ``command_status`` should be in the range 0-255.
     """
     if command_status not in range(256):
         raise ValueError("command_status must be an integer in the range 0-255")
@@ -158,7 +159,7 @@ def Prompt():
     """
     iTerm2 shell integration prompt context manager
 
-    Use like:
+    Use like::
 
         with Prompt():
             print("Prompt:", end='')
@@ -171,7 +172,7 @@ class Output(object):
     """
     iTerm2 shell integration output context manager
 
-    Use like:
+    Use like::
 
         with Output() as o:
             print("output")
