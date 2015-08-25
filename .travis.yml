@@ -13,8 +13,11 @@ matrix:
     - python: "3.5-dev"
     - python: "nightly"
 
-install: "pip install ipython"
+install: "pip install ipython pyflakes"
 
-script: py.test
+script:
+  - shopt -s extglob globstar
+  - py.test
+  - pyflakes iterm2_tools/**/!(__init__).py setup.py
 
 sudo: false
