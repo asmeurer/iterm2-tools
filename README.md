@@ -39,6 +39,9 @@ Example:
 
 ![](docs/ipython-example.png)
 
+Note the arrows to the left of the `In` prompts. The blue arrow represents a
+normal input and a red arrow represents an input that raised an exception.
+
 ## License
 
 MIT
