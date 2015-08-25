@@ -1,2 +1,6 @@
 include versioneer.py
 include iterm2_tools/_version.py
+include LICENSE
+include docs/*
+include example_repl.py
+include CHANGELOG.md
