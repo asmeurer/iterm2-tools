@@ -1,11 +1,11 @@
 package:
   name: iterm2-tools
-  version: "2.1"
+  version: "2.2"
 
 source:
-  fn: iterm2-tools-2.1.tar.gz
-  url: https://pypi.python.org/packages/source/i/iterm2-tools/iterm2-tools-2.1.tar.gz
-  md5: 241481cbd315ab46dbff1620907fde3f
+  fn: iterm2-tools-2.2.tar.gz
+  url: https://pypi.python.org/packages/source/i/iterm2-tools/iterm2-tools-2.2.tar.gz
+  md5: 7e8cd0b985c0819a425c79a45edd096a
 #  patches:
    # List any patch files here
    # - fix.patch
@@ -37,6 +37,7 @@ test:
   # Python imports
   imports:
     - iterm2_tools
+    - iterm2_tools.tests
 
   # commands:
     # You can put test commands to be run here.  Use this to test that the
