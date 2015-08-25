@@ -6,6 +6,7 @@
 - Add readline_invisible() to shell_integration.
 - Add iterm2_tools.ipython IPython extension to enable shell integration in
   IPython.
+- Enable Travis CI tests.
 
 2.1 (2015-08-06)
 ----------------
