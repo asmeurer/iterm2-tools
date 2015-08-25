@@ -42,6 +42,9 @@ Example:
 Note the arrows to the left of the `In` prompts. The blue arrow represents a
 normal input and a red arrow represents an input that raised an exception.
 
+See https://iterm2-tools.readthedocs.org/en/latest/ipython.html for full
+documentation.
+
 ## License
 
 MIT
