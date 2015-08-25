@@ -13,6 +13,7 @@ Contents:
 
    images
    shell_integration
+   ipython
 
 Indices and tables
 ==================
