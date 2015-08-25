@@ -11,7 +11,10 @@ setup(
     author='Aaron Meurer',
     author_email='asmeurer@gmail.com',
     url='https://github.com/asmeurer/iterm2-tools',
-    packages=['iterm2_tools'],
+    packages=[
+        'iterm2_tools',
+        'iterm2_tools.tests'
+        ],
     package_data={'iterm2_tools.tests': ['aloha_cat.png']},
     long_description="""
 iterm2-tools
