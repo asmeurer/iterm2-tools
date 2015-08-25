@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    images
+   shell_integration
 
 Indices and tables
 ==================
