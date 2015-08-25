@@ -45,6 +45,12 @@ normal input and a red arrow represents an input that raised an exception.
 See https://iterm2-tools.readthedocs.org/en/latest/ipython.html for full
 documentation.
 
+## Library functions
+
+iterm2_tools has library functions for displaying images inline in the
+terminal and for shell integration. See the
+[docs](https://iterm2-tools.readthedocs.org/) for more information.
+
 ## License
 
 MIT
