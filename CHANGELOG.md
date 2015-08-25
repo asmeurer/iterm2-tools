@@ -1,8 +1,9 @@
 2.2 (unreleased)
 ------------------
 
-- Rename image_bytes to display_image_bytes
-- Add readline_invisible() to shell_integration
+- Rename image_bytes to display_image_bytes (image_bytes has been kept for
+  backwards compatibility for now).
+- Add readline_invisible() to shell_integration.
 - Add iterm2_tools.ipython IPython extension to enable shell integration in
   IPython.
 
