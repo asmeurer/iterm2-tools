@@ -1,5 +1,5 @@
-2.2 (unreleased)
-------------------
+2.2 (2015-08-24)
+----------------
 
 - Rename image_bytes to display_image_bytes (image_bytes has been kept for
   backwards compatibility for now).
