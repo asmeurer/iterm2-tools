@@ -1,10 +1,14 @@
+"""
+Functions for displaying images inline in iTerm2.
+
+See https://iterm2.com/images.html.
+"""
 from __future__ import print_function, division, absolute_import
 
 import sys
 import os
 import base64
 
-# See https://iterm2.com/images.html
 IMAGE_CODE = '\033]1337;File={file};inline={inline};size={size}:{base64_img}\a'
 
 def display_image_bytes(b, filename=None, inline=1):
