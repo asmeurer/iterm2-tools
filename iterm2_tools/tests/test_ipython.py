@@ -103,6 +103,8 @@ Do you really want to exit ([y]/n)?\
 """
     assert stderr == b''
 
+    # Ideally all the codes would be bytes in Python 3, but bytes don't have a
+    # format (even in Python 3.5).
     stdout = stdout.decode('ascii')
     AFTER_OUTPUT0 = AFTER_OUTPUT.format(command_status=0)
     AFTER_OUTPUT1 = AFTER_OUTPUT.format(command_status=1)
