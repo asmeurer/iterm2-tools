@@ -44,7 +44,7 @@ Some notes about this:
 from __future__ import print_function, division, absolute_import
 from IPython.core.prompts import LazyEvaluate
 from .shell_integration import (BEFORE_PROMPT, AFTER_PROMPT, before_output,
-    AFTER_OUTPUT, after_output, readline_invisible)
+    AFTER_OUTPUT, readline_invisible)
 
 # Some implementation notes:
 
