@@ -31,7 +31,7 @@ def image_bytes(b, filename=None, inline=1):
     """
     **DEPRECATED**: Use display_image_bytes.
     """
-    return display_image_file(b, filename=filename, inline=inline)
+    return display_image_bytes(b, filename=filename, inline=inline)
 
 def display_image_file(fn):
     """
