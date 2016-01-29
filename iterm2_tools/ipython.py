@@ -30,6 +30,10 @@ Some notes about this:
 - If an exception is raised, the command status will be set to 1 (making the
   iTerm2 shell integration arrow turn red). Otherwise it will be set to 0.
 
+- However, due to a `bug in IPython
+  <https://github.com/ipython/ipython/issues/9199>`_, SyntaxErrors will not
+  register as failures (the arrow next to the prompt won't turn red).
+
 - This requires a version of IPython greater than 4.0.0. Otherwise, due to a
   bug in IPython, the invisible codes printed in the prompt will be read by
   IPython as not invisible, causing the "Out" prompt to indent several
