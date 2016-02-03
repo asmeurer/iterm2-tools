@@ -14,6 +14,11 @@ matrix:
 
 install: "pip install ipython pyflakes"
 
+before_install:
+  - pip install codecov
+after_success:
+  - codecov
+
 script:
   - shopt -s extglob globstar
   - py.test
