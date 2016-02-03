@@ -25,7 +25,7 @@ f()
 
 """
     # First the control (without iterm2_tools)
-    p = subprocess.Popen(ipython + ['--quick', '--colors=LightBG', '--no-banner'],
+    p = subprocess.Popen(ipython + ['--quick', '--colors=NoColor', '--no-banner'],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     stdout, stderr = p.communicate(input=commands)
@@ -33,31 +33,31 @@ f()
     stdout = stdout.replace(SMM, b'').strip()
 
     assert stdout == b"""\
-\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x021\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02\x1b[0;31mOut[\x1b[1;31m1\x1b[0;31m]: \x1b[0m1
+In [1]: Out[1]: 1
 
-\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x022\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
-\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x022\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02\x1b[0;31m---------------------------------------------------------------------------\x1b[0m
-\x1b[0;31mException\x1b[0m                                 Traceback (most recent call last)
-\x1b[0;32m<ipython-input-2-fca2ab0ca76b>\x1b[0m in \x1b[0;36m<module>\x1b[0;34m()\x1b[0m
-\x1b[0;32m----> 1\x1b[0;31m \x1b[0;32mraise\x1b[0m \x1b[0mException\x1b[0m\x1b[0;34m\x1b[0m\x1b[0m
-\x1b[0m
-\x1b[0;31mException\x1b[0m: \n\n\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x023\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02\x1b[0;31m---------------------------------------------------------------------------\x1b[0m
-\x1b[0;31mNameError\x1b[0m                                 Traceback (most recent call last)
-\x1b[0;32m<ipython-input-3-002bcaa7be0e>\x1b[0m in \x1b[0;36m<module>\x1b[0;34m()\x1b[0m
-\x1b[0;32m----> 1\x1b[0;31m \x1b[0mundefined\x1b[0m\x1b[0;34m\x1b[0m\x1b[0m
-\x1b[0m
-\x1b[0;31mNameError\x1b[0m: name 'undefined' is not defined
+In [2]: \n\
+In [2]: ---------------------------------------------------------------------------
+Exception                                 Traceback (most recent call last)
+<ipython-input-2-fca2ab0ca76b> in <module>()
+----> 1 raise Exception
 
-\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x024\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02\x01\x1b[0;34m\x02   ...: \x01\x1b[0m\x02\x01\x1b[0;34m\x02   ...: \x01\x1b[0m\x02
-\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x025\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
-\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
-\x01\x1b[0;34m\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b[0m\x02
+Exception: \n\nIn [3]: ---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-3-002bcaa7be0e> in <module>()
+----> 1 undefined
+
+NameError: name 'undefined' is not defined
+
+In [4]:    ...:    ...: \n\
+In [5]: \n\
+In [6]: \n\
+In [6]: \n\
 Do you really want to exit ([y]/n)?\
 """
     assert stderr == b''
 
     # Now the same thing with iterm2_tools.ipython
-    p = subprocess.Popen(ipython + ['--quick', '--colors=LightBG',
+    p = subprocess.Popen(ipython + ['--quick', '--colors=NoColor',
         '--no-banner', '--ext=iterm2_tools.ipython'], stdout=subprocess.PIPE,
         stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
@@ -79,26 +79,29 @@ Do you really want to exit ([y]/n)?\
     # Different versions of readline do different things with the smm code.
     stdout = stdout.replace(SMM, b'').strip()
 
+    # Note: this test will fail in versions of IPython < 4.1.0 because of a
+    # bug. See https://github.com/ipython/ipython/issues/8724 and
+    # https://github.com/ipython/ipython/pull/8738.
     assert stdout == b"""\
-\x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x021\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02\x1b]133;C\x07                                \x1b[0;31mOut[\x1b[1;31m1\x1b[0;31m]: \x1b[0m1
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
 
-\x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x022\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02
-\x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x022\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02\x1b]133;C\x07\x1b[0;31m---------------------------------------------------------------------------\x1b[0m
-\x1b[0;31mException\x1b[0m                                 Traceback (most recent call last)
-\x1b[0;32m<ipython-input-2-fca2ab0ca76b>\x1b[0m in \x1b[0;36m<module>\x1b[0;34m()\x1b[0m
-\x1b[0;32m----> 1\x1b[0;31m \x1b[0;32mraise\x1b[0m \x1b[0mException\x1b[0m\x1b[0;34m\x1b[0m\x1b[0m
-\x1b[0m
-\x1b[0;31mException\x1b[0m: \n\n\x01\x1b[0;34m\x02\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x023\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02\x1b]133;C\x07\x1b[0;31m---------------------------------------------------------------------------\x1b[0m
-\x1b[0;31mNameError\x1b[0m                                 Traceback (most recent call last)
-\x1b[0;32m<ipython-input-3-002bcaa7be0e>\x1b[0m in \x1b[0;36m<module>\x1b[0;34m()\x1b[0m
-\x1b[0;32m----> 1\x1b[0;31m \x1b[0mundefined\x1b[0m\x1b[0;34m\x1b[0m\x1b[0m
-\x1b[0m
-\x1b[0;31mNameError\x1b[0m: name 'undefined' is not defined
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07---------------------------------------------------------------------------
+Exception                                 Traceback (most recent call last)
+<ipython-input-2-fca2ab0ca76b> in <module>()
+----> 1 raise Exception
 
-\x01\x1b[0;34m\x02\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x024\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02                                \x01\x1b[0;34m\x02   ...: \x01\x1b[0m\x02                                \x01\x1b[0;34m\x02   ...: \x01\x1b[0m\x02\x1b]133;C\x07
-\x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x025\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02\x1b]133;C\x07
-\x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02
-\x01\x1b[0;34m\x02\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [\x01\x1b[1;34m\x026\x01\x1b[0;34m\x02]: \x01\x1b]133;B\x07\x02\x01\x1b[0m\x02
+Exception: \n\n\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-3-002bcaa7be0e> in <module>()
+----> 1 undefined
+
+NameError: name 'undefined' is not defined
+
+\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [4]: \x01\x1b]133;B\x07\x02   ...:    ...: \x1b]133;C\x07
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [5]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
 Do you really want to exit ([y]/n)?\
 """
     assert stderr == b''
