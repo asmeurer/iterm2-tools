@@ -15,13 +15,13 @@ matrix:
 install: "pip install ipython pyflakes"
 
 before_install:
-  - pip install codecov
+  - pip install codecov pytest-cov
 after_success:
   - codecov
 
 script:
   - shopt -s extglob globstar
-  - py.test
+  - py.test --cov=./
   - pyflakes iterm2_tools/**/!(__init__).py setup.py
 
 sudo: false
