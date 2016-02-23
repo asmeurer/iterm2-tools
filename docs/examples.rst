@@ -23,8 +23,8 @@ Install with
    pip install catimg
 
 
-gifycat
-=======
+giphycat
+========
 
 Display a gif from Giphy in your terminal.
 
