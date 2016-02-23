@@ -2,7 +2,10 @@
  Projects using iTerm2 tools
 =============================
 
-Some example projects using iterm2-tools.
+Some example projects using iterm2-tools.  If you know of another project
+using this, please `let me know
+<https://github.com/asmeurer/iterm2-tools/issues/new>`_.
+
 
 catimg
 ======
