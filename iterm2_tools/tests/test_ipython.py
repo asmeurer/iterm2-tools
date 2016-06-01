@@ -6,6 +6,7 @@ import re
 from iterm2_tools.shell_integration import (BEFORE_PROMPT, AFTER_PROMPT,
     BEFORE_OUTPUT, AFTER_OUTPUT, readline_invisible)
 
+import IPython
 from IPython.testing.tools import get_ipython_cmd
 
 def test_IPython():
@@ -32,28 +33,62 @@ f()
     # Different versions of readline do different things with the smm code.
     stdout = stdout.replace(SMM, b'').strip()
 
-    assert stdout == b"""\
+    expected41  = b"""\
 In [1]: Out[1]: 1
 
-In [2]: \n\
+In [2]: 
 In [2]: ---------------------------------------------------------------------------
 Exception                                 Traceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: \n\nIn [3]: ---------------------------------------------------------------------------
+Exception: 
+
+In [3]: ---------------------------------------------------------------------------
 NameError                                 Traceback (most recent call last)
 <ipython-input-3-002bcaa7be0e> in <module>()
 ----> 1 undefined
 
 NameError: name 'undefined' is not defined
 
-In [4]:    ...:    ...: \n\
-In [5]: \n\
-In [6]: \n\
-In [6]: \n\
+In [4]:    ...:    ...: 
+In [5]: 
+In [6]: 
+In [6]: 
 Do you really want to exit ([y]/n)?\
 """
+
+    expected42 = b"""\
+In [1]: Out[1]: 1
+
+In [2]: 
+In [2]: 
+ExceptionTraceback (most recent call last)
+<ipython-input-2-fca2ab0ca76b> in <module>()
+----> 1 raise Exception
+
+Exception: 
+
+In [3]: 
+NameErrorTraceback (most recent call last)
+<ipython-input-3-002bcaa7be0e> in <module>()
+----> 1 undefined
+
+NameError: name 'undefined' is not defined
+
+In [4]:    ...:    ...: 
+In [5]: 
+In [6]: 
+In [6]: 
+Do you really want to exit ([y]/n)?\
+"""
+
+    if (4,2) < IPython.version_info:
+        expected = expected42
+    else:
+        expected = expected41
+    
+    assert stdout == expected
     assert stderr == b''
 
     # Now the same thing with iterm2_tools.ipython
@@ -82,7 +117,8 @@ Do you really want to exit ([y]/n)?\
     # Note: this test will fail in versions of IPython < 4.1.0 because of a
     # bug. See https://github.com/ipython/ipython/issues/8724 and
     # https://github.com/ipython/ipython/pull/8738.
-    assert stdout == b"""\
+    
+    expected41 = b"""\
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
 
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
@@ -104,6 +140,61 @@ NameError: name 'undefined' is not defined
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
 Do you really want to exit ([y]/n)?\
 """
+
+    expected42 = b"""\
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
+
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+ExceptionTraceback (most recent call last)
+<ipython-input-2-fca2ab0ca76b> in <module>()
+----> 1 raise Exception
+
+Exception: 
+
+\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+NameErrorTraceback (most recent call last)
+<ipython-input-3-002bcaa7be0e> in <module>()
+----> 1 undefined
+
+NameError: name 'undefined' is not defined
+
+\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [4]: \x01\x1b]133;B\x07\x02   ...:    ...: \x1b]133;C\x07
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [5]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
+Do you really want to exit ([y]/n)?\
+"""
+
+    expected42 = b"""\
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
+
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+ExceptionTraceback (most recent call last)
+<ipython-input-2-fca2ab0ca76b> in <module>()
+----> 1 raise Exception
+
+Exception: 
+
+\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+NameErrorTraceback (most recent call last)
+<ipython-input-3-002bcaa7be0e> in <module>()
+----> 1 undefined
+
+NameError: name 'undefined' is not defined
+
+\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [4]: \x01\x1b]133;B\x07\x02   ...:    ...: \x1b]133;C\x07
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [5]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
+Do you really want to exit ([y]/n)?\
+"""
+    if (4,2) < IPython.version_info:
+        expected = expected42
+    else:
+        expected = expected41
+    assert stdout == expected
     assert stderr == b''
 
     # Ideally all the codes would be bytes in Python 3, but bytes don't have a
