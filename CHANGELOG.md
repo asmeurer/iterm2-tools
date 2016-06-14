@@ -1,3 +1,8 @@
+2.2.1 (???)
+----------------
+- Flush stdout in before_output and before_prompt. This fixes the command
+  timing feature in the IPython integration.
+
 2.2 (2015-08-24)
 ----------------
 
