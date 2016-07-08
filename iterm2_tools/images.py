@@ -9,7 +9,7 @@ import sys
 import os
 import base64
 
-IMAGE_CODE = '\033]1337;File={file};inline={inline};size={size}:{base64_img}\a'
+IMAGE_CODE = '\033]1337;File=name={name};inline={inline};size={size}:{base64_img}\a'
 
 def display_image_bytes(b, filename=None, inline=1):
     """
@@ -19,7 +19,7 @@ def display_image_bytes(b, filename=None, inline=1):
 
     """
     data = {
-        'file': base64.b64encode((filename or 'Unnamed file').encode('utf-8')).decode('ascii'),
+        'name': base64.b64encode((filename or 'Unnamed file').encode('utf-8')).decode('ascii'),
         'inline': inline,
         'size': len(b),
         'base64_img': base64.b64encode(b).decode('ascii'),
