@@ -166,30 +166,6 @@ NameError: name 'undefined' is not defined
 Do you really want to exit ([y]/n)?\
 """
 
-    expected42 = b"""\
-\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
-
-\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
-\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
-ExceptionTraceback (most recent call last)
-<ipython-input-2-fca2ab0ca76b> in <module>()
-----> 1 raise Exception
-
-Exception: \n\
-
-\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
-NameErrorTraceback (most recent call last)
-<ipython-input-3-002bcaa7be0e> in <module>()
-----> 1 undefined
-
-NameError: name 'undefined' is not defined
-
-\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [4]: \x01\x1b]133;B\x07\x02   ...:    ...: \x1b]133;C\x07
-\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [5]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
-\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
-\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
-Do you really want to exit ([y]/n)?\
-"""
     if IPython.version_info > (4, 2):
         expected = expected42
     else:
