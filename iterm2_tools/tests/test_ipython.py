@@ -35,19 +35,21 @@ f()
     # Different versions of readline do different things with the smm code.
     stdout = stdout.replace(SMM, b'').strip()
 
+    # Exceptions are printed differently in Python 2 and 3 for some reason
+    stdout = stdout.replace(b'-'*75, b'')
+    stdout = stdout.replace(b' '*33 + b'Traceback', b'Traceback')
+
     expected42  = b"""\
 In [1]: Out[1]: 1
 
 In [2]: \n\
-In [2]: ---------------------------------------------------------------------------
-Exception                                 Traceback (most recent call last)
+In [2]: \n\
+ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: \n\
-
-In [3]: ---------------------------------------------------------------------------
-NameError                                 Traceback (most recent call last)
+Exception: \n\nIn [3]: \n\
+NameErrorTraceback (most recent call last)
 <ipython-input-3-002bcaa7be0e> in <module>()
 ----> 1 undefined
 
@@ -116,6 +118,10 @@ Do you really want to exit ([y]/n)?\
     # Different versions of readline do different things with the smm code.
     stdout = stdout.replace(SMM, b'').strip()
 
+    # Exceptions are printed differently in Python 2 and 3 for some reason
+    stdout = stdout.replace(b'-'*75, b'')
+    stdout = stdout.replace(b' '*33 + b'Traceback', b'Traceback')
+
     # Note: this test will fail in versions of IPython < 4.1.0 because of a
     # bug. See https://github.com/ipython/ipython/issues/8724 and
     # https://github.com/ipython/ipython/pull/8738.
@@ -124,13 +130,13 @@ Do you really want to exit ([y]/n)?\
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
 
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
-\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07---------------------------------------------------------------------------
-Exception                                 Traceback (most recent call last)
+\x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: \n\n\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07---------------------------------------------------------------------------
-NameError                                 Traceback (most recent call last)
+Exception: \n\n\x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
+NameErrorTraceback (most recent call last)
 <ipython-input-3-002bcaa7be0e> in <module>()
 ----> 1 undefined
 
