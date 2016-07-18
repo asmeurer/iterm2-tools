@@ -36,13 +36,13 @@ f()
     expected41  = b"""\
 In [1]: Out[1]: 1
 
-In [2]: 
+In [2]: \
 In [2]: ---------------------------------------------------------------------------
 Exception                                 Traceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: 
+Exception: \
 
 In [3]: ---------------------------------------------------------------------------
 NameError                                 Traceback (most recent call last)
@@ -51,35 +51,35 @@ NameError                                 Traceback (most recent call last)
 
 NameError: name 'undefined' is not defined
 
-In [4]:    ...:    ...: 
-In [5]: 
-In [6]: 
-In [6]: 
+In [4]:    ...:    ...: \
+In [5]: \
+In [6]: \
+In [6]: \
 Do you really want to exit ([y]/n)?\
 """
 
     expected42 = b"""\
 In [1]: Out[1]: 1
 
-In [2]: 
-In [2]: 
+In [2]: \
+In [2]: \
 ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: 
+Exception: \
 
-In [3]: 
+In [3]: \
 NameErrorTraceback (most recent call last)
 <ipython-input-3-002bcaa7be0e> in <module>()
 ----> 1 undefined
 
 NameError: name 'undefined' is not defined
 
-In [4]:    ...:    ...: 
-In [5]: 
-In [6]: 
-In [6]: 
+In [4]:    ...:    ...: \
+In [5]: \
+In [6]: \
+In [6]: \
 Do you really want to exit ([y]/n)?\
 """
 
@@ -87,7 +87,7 @@ Do you really want to exit ([y]/n)?\
         expected = expected42
     else:
         expected = expected41
-    
+
     assert stdout == expected
     assert stderr == b''
 
@@ -117,7 +117,7 @@ Do you really want to exit ([y]/n)?\
     # Note: this test will fail in versions of IPython < 4.1.0 because of a
     # bug. See https://github.com/ipython/ipython/issues/8724 and
     # https://github.com/ipython/ipython/pull/8738.
-    
+
     expected41 = b"""\
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
 
@@ -150,7 +150,7 @@ ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: 
+Exception: \
 
 \x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
 NameErrorTraceback (most recent call last)
@@ -175,7 +175,7 @@ ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: 
+Exception: \
 
 \x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
 NameErrorTraceback (most recent call last)
