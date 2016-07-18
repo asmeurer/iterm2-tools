@@ -41,6 +41,7 @@ Contents:
    images
    shell_integration
    ipython
+   examples
 
 Indices and tables
 ==================
