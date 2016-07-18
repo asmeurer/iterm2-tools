@@ -84,11 +84,10 @@ Do you really want to exit ([y]/n)?\
 """
 
     if IPython.version_info > (4, 2):
-        expected = expected42
+        assert stdout == expected42
     else:
-        expected = expected41
+        assert stdout == expected41
 
-    assert stdout == expected
     assert stderr == b''
 
     # Now the same thing with iterm2_tools.ipython
@@ -167,10 +166,10 @@ Do you really want to exit ([y]/n)?\
 """
 
     if IPython.version_info > (4, 2):
-        expected = expected42
+        assert stdout == expected42
     else:
-        expected = expected41
-    assert stdout == expected
+        assert stdout == expected41
+
     assert stderr == b''
 
     # Ideally all the codes would be bytes in Python 3, but bytes don't have a
