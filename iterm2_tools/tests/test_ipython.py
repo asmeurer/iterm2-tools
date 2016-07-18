@@ -36,13 +36,13 @@ f()
     expected41  = b"""\
 In [1]: Out[1]: 1
 
-In [2]: \
+In [2]: \n\
 In [2]: ---------------------------------------------------------------------------
 Exception                                 Traceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: \
+Exception: \n\
 
 In [3]: ---------------------------------------------------------------------------
 NameError                                 Traceback (most recent call last)
@@ -51,35 +51,35 @@ NameError                                 Traceback (most recent call last)
 
 NameError: name 'undefined' is not defined
 
-In [4]:    ...:    ...: \
-In [5]: \
-In [6]: \
-In [6]: \
+In [4]:    ...:    ...: \n\
+In [5]: \n\
+In [6]: \n\
+In [6]: \n\
 Do you really want to exit ([y]/n)?\
 """
 
     expected42 = b"""\
 In [1]: Out[1]: 1
 
-In [2]: \
-In [2]: \
+In [2]: \n\
+In [2]: \n\
 ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: \
+Exception: \n\
 
-In [3]: \
+In [3]: \n\
 NameErrorTraceback (most recent call last)
 <ipython-input-3-002bcaa7be0e> in <module>()
 ----> 1 undefined
 
 NameError: name 'undefined' is not defined
 
-In [4]:    ...:    ...: \
-In [5]: \
-In [6]: \
-In [6]: \
+In [4]:    ...:    ...: \n\
+In [5]: \n\
+In [6]: \n\
+In [6]: \n\
 Do you really want to exit ([y]/n)?\
 """
 
@@ -150,7 +150,7 @@ ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: \
+Exception: \n\
 
 \x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
 NameErrorTraceback (most recent call last)
@@ -175,7 +175,7 @@ ExceptionTraceback (most recent call last)
 <ipython-input-2-fca2ab0ca76b> in <module>()
 ----> 1 raise Exception
 
-Exception: \
+Exception: \n\
 
 \x01\x1b]133;D;1\x07\x02\x01\x1b]133;A\x07\x02In [3]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07
 NameErrorTraceback (most recent call last)
