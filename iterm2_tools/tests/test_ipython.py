@@ -83,7 +83,7 @@ In [6]: \n\
 Do you really want to exit ([y]/n)?\
 """
 
-    if IPython.version_info > (4, 2):
+    if IPython.version_info >= (5,):
         assert stdout == expected5
     else:
         assert stdout == expected42
@@ -165,7 +165,7 @@ NameError: name 'undefined' is not defined
 Do you really want to exit ([y]/n)?\
 """
 
-    if IPython.version_info > (4, 2):
+    if IPython.version_info >= (5,):
         assert stdout == expected5
     else:
         assert stdout == expected42
