@@ -1,3 +1,9 @@
+2.3 (...)
+----------------
+- Fix file name and size info for the image display.
+- API break: the file name format string in `IMAGE_CODE` is now `{name}` (was
+  previously `{file}`.
+
 2.2 (2015-08-24)
 ----------------
 
