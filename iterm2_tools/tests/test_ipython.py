@@ -26,7 +26,9 @@ f()
 
 """
     # First the control (without iterm2_tools)
-    p = subprocess.Popen(ipython + ['--quick', '--colors=NoColor', '--no-banner'],
+    p = subprocess.Popen(ipython + ['--quick', '--colors=NoColor',
+        '--no-banner'] + (['--no-simple-prompt'] if IPython.version_info >= (5,)
+            else []),
         stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     stdout, stderr = p.communicate(input=commands)
@@ -92,7 +94,8 @@ Do you really want to exit ([y]/n)?\
 
     # Now the same thing with iterm2_tools.ipython
     p = subprocess.Popen(ipython + ['--quick', '--colors=NoColor',
-        '--no-banner', '--ext=iterm2_tools.ipython'], stdout=subprocess.PIPE,
+        '--no-banner', '--ext=iterm2_tools.ipython'] + (['--no-simple-prompt'] if IPython.version_info >= (5,)
+            else []), stdout=subprocess.PIPE,
         stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     # Things of note here:
