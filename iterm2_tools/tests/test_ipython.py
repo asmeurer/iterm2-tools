@@ -33,7 +33,7 @@ f()
     # Different versions of readline do different things with the smm code.
     stdout = stdout.replace(SMM, b'').strip()
 
-    expected41  = b"""\
+    expected42  = b"""\
 In [1]: Out[1]: 1
 
 In [2]: \n\
@@ -58,7 +58,7 @@ In [6]: \n\
 Do you really want to exit ([y]/n)?\
 """
 
-    expected42 = b"""\
+    expected5 = b"""\
 In [1]: Out[1]: 1
 
 In [2]: \n\
@@ -84,9 +84,9 @@ Do you really want to exit ([y]/n)?\
 """
 
     if IPython.version_info > (4, 2):
-        assert stdout == expected42
+        assert stdout == expected5
     else:
-        assert stdout == expected41
+        assert stdout == expected42
 
     assert stderr == b''
 
@@ -117,7 +117,7 @@ Do you really want to exit ([y]/n)?\
     # bug. See https://github.com/ipython/ipython/issues/8724 and
     # https://github.com/ipython/ipython/pull/8738.
 
-    expected41 = b"""\
+    expected42 = b"""\
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
 
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
@@ -140,7 +140,7 @@ NameError: name 'undefined' is not defined
 Do you really want to exit ([y]/n)?\
 """
 
-    expected42 = b"""\
+    expected5 = b"""\
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [1]: \x01\x1b]133;B\x07\x02\x1b]133;C\x07Out[1]: 1
 
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [2]: \x01\x1b]133;B\x07\x02
@@ -166,9 +166,9 @@ Do you really want to exit ([y]/n)?\
 """
 
     if IPython.version_info > (4, 2):
-        assert stdout == expected42
+        assert stdout == expected5
     else:
-        assert stdout == expected41
+        assert stdout == expected42
 
     assert stderr == b''
 
