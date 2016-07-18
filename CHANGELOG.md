@@ -1,5 +1,8 @@
-2.2.1 (???)
+2.3 (...)
 ----------------
+- Fix file name and size info for the image display.
+- API break: the file name format string in `IMAGE_CODE` is now `{name}` (was
+  previously `{file}`.
 - Flush stdout in before_output and before_prompt. This fixes the command
   timing feature in the IPython integration.
 
