@@ -111,12 +111,15 @@ def load_ipython_extension(ipython):
 
 
 def wrap_prompts_class(Klass):
-    """Wrap an IPython's Prompt class in order for 
+    """
+    Wrap an IPython's Prompt class
 
-    Prompt to inject correct escape sequences at the right positions for iterm2 shell integrations
+    This is needed in order for Prompt to inject the correct escape sequences
+    at the right positions for shell integrations.
+
     """
 
-    try: 
+    try:
         from prompt_toolkit.token import ZeroWidthEscape
     except ImportError:
         return Klass
