@@ -83,7 +83,7 @@ In [6]: \
 Do you really want to exit ([y]/n)?\
 """
 
-    if (4,2) < IPython.version_info:
+    if IPython.version_info > (4, 2):
         expected = expected42
     else:
         expected = expected41
@@ -190,7 +190,7 @@ NameError: name 'undefined' is not defined
 \x01\x1b]133;D;0\x07\x02\x01\x1b]133;A\x07\x02In [6]: \x01\x1b]133;B\x07\x02
 Do you really want to exit ([y]/n)?\
 """
-    if (4,2) < IPython.version_info:
+    if IPython.version_info > (4, 2):
         expected = expected42
     else:
         expected = expected41
