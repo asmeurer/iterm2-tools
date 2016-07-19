@@ -7,12 +7,17 @@ python:
   - "3.5-dev"
   - "nightly"
 
+env:
+  matrix:
+    - IPYTHON="<5"
+    - IPYTHON=""
+
 matrix:
   allow_failures:
     - python: "3.5-dev"
     - python: "nightly"
 
-install: "pip install ipython pyflakes"
+install: "pip install ipython$IPYTHON pyflakes"
 
 before_install:
   - pip install codecov pytest-cov
