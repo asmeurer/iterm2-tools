@@ -3,6 +3,11 @@ IPython shell integration extension
 
 Enables iTerm2 shell integration in the IPython shell.
 
+.. note::
+
+   This does not yet work with IPython 5.0. See
+   https://github.com/asmeurer/iterm2-tools/pull/6.
+
 To load, use::
 
     %load_ext iterm2_tools.ipython

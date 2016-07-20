@@ -131,6 +131,9 @@ def before_prompt():
     Shell sequence to be run before the prompt.
     """
     sys.stdout.write(BEFORE_PROMPT)
+    # Flushing is important as the command timing feature is based on
+    # BEFORE_OUTPUT and BEFORE_PROMPT
+    sys.stdout.flush()
 
 def after_prompt():
     """
@@ -143,6 +146,9 @@ def before_output():
     Shell sequence to be run before the command output.
     """
     sys.stdout.write(BEFORE_OUTPUT)
+    # Flushing is important as the command timing feature is based on
+    # BEFORE_OUTPUT and BEFORE_PROMPT
+    sys.stdout.flush()
 
 def after_output(command_status):
     """
@@ -153,6 +159,9 @@ def after_output(command_status):
     if command_status not in range(256):
         raise ValueError("command_status must be an integer in the range 0-255")
     sys.stdout.write(AFTER_OUTPUT.format(command_status=command_status))
+    # Flushing is important as the command timing feature maybe based on
+    # AFTER_OUTPUT in the future.
+    sys.stdout.flush()
 
 @contextmanager
 def Prompt():

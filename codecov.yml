@@ -1,0 +1,8 @@
+coverage:
+  ignore:
+  - versioneer.py
+  - setup.py
+  - example_repl.py
+  - iterm2_tools/_version.py
+
+comment: off
