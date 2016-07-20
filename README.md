@@ -14,7 +14,7 @@ See https://iterm2-tools.readthedocs.org/en/latest/ for the documentation.
 
 or
 
-    conda install -c asmeurer iterm2_tools
+    conda install -c conda-forge iterm2_tools
 
 ## IPython shell integration
 

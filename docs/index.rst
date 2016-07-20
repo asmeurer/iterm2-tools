@@ -26,7 +26,7 @@ or
 
 .. code::
 
-    conda install -c asmeurer iterm2_tools
+    conda install -c conda-forge iterm2_tools
 
 
 
