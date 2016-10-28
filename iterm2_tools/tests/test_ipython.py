@@ -9,6 +9,10 @@ from iterm2_tools.shell_integration import (BEFORE_PROMPT, AFTER_PROMPT,
 import IPython
 from IPython.testing.tools import get_ipython_cmd
 
+import pexpect
+
+IPy5 = IPython.version_info >= (5,)
+
 def test_IPython():
     ipython = get_ipython_cmd()
 
@@ -26,12 +30,26 @@ f()
 
 """
     # First the control (without iterm2_tools)
-    p = subprocess.Popen(ipython + ['--quick', '--colors=NoColor',
-        '--no-banner'] + (['--no-simple-prompt'] if IPython.version_info >= (5,)
-            else []),
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    if IPy5:
+        p = pexpect.spawn(' '.join(ipython + ['--quick', '--colors=NoColor',
+            '--no-banner', '--no-simple-prompt']))
+        p.write(commands)
+        p.sendeof()
+        p.expect(pexpect.EOF, timeout=10)
 
-    stdout, stderr = p.communicate(input=commands)
+        stdout, stderr = p.before, b''
+
+        try:
+            assert not p.isalive()
+        finally:
+            p.terminate(force=True)
+
+    else:
+        p = subprocess.Popen(ipython + ['--quick', '--colors=NoColor',
+        '--no-banner'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+
+        stdout, stderr = p.communicate(input=commands)
+
     # Different versions of readline do different things with the smm code.
     stdout = stdout.replace(SMM, b'').strip()
 
