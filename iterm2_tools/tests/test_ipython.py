@@ -32,8 +32,8 @@ f()
     # First the control (without iterm2_tools)
     if IPy5:
         p = pexpect.spawn(' '.join(ipython + ['--quick', '--colors=NoColor',
-            '--no-banner', '--no-simple-prompt']))
-        p.write(commands)
+            '--no-banner', '--no-simple-prompt', '--no-term-title',
+            '--no-confirm-exit', '--no-color-info']))
         p.sendeof()
         p.expect(pexpect.EOF, timeout=10)
 
