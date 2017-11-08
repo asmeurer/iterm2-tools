@@ -27,7 +27,7 @@ matrix:
 install: "pip install ipython$IPYTHON pyflakes"
 
 before_install:
-  - pip install codecov pytest-cov doctr
+  - pip install codecov pytest-cov
 after_success:
   - codecov
 
