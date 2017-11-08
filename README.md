@@ -4,7 +4,7 @@ iTerm2 tools for Python
 
 Some tools for working with iTerm2's proprietary escape codes.
 
-Supports Python 2.7, 3.3, 3.4, and 3.5.
+Supports Python 2.7, 3.4, 3.5, and 3.6.
 
 See https://iterm2-tools.readthedocs.org/en/latest/ for the documentation.
 
