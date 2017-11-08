@@ -27,7 +27,7 @@ script:
   - set -e
   - shopt -s extglob globstar
   - if [[ "${DOCS}" != "true" ]]; then
-      py.test --cov=./;
+      py.test;
     fi
   - if [[ "${DOCS}" != "true" ]]; then
       pyflakes iterm2_tools/**/!(__init__).py setup.py;

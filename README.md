@@ -4,9 +4,9 @@ iTerm2 tools for Python
 
 Some tools for working with iTerm2's proprietary escape codes.
 
-Supports Python 2.7, 3.3, 3.4, and 3.5.
+Supports Python 2.7, 3.4, 3.5, and 3.6.
 
-See https://iterm2-tools.readthedocs.org/en/latest/ for the documentation.
+See http://www.asmeurer.com/iterm2-tools/index.html for the documentation.
 
 ## Installation
 
@@ -42,14 +42,14 @@ Example:
 Note the arrows to the left of the `In` prompts. The blue arrow represents a
 normal input and a red arrow represents an input that raised an exception.
 
-See https://iterm2-tools.readthedocs.org/en/latest/ipython.html for full
+See http://www.asmeurer.com/iterm2-tools/ipython.html for full
 documentation.
 
 ## Library functions
 
 iterm2_tools has library functions for displaying images inline in the
 terminal and for shell integration. See the
-[docs](https://iterm2-tools.readthedocs.org/) for more information.
+[docs](http://www.asmeurer.com/iterm2-tools/) for more information.
 
 ## License
 
