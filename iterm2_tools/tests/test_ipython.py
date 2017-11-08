@@ -42,27 +42,29 @@ f()
         fout = open('mylog.txt','wb')
         p.logfile = fout
         # See prompt_toolkit/terminal/vt100_input.py and prompt_toolkit/terminal/vt100_output.py
-        prompt = (
-            b'\r\n'             # Newline
-            b'\x1b[?1l'         # Put terminal in cursor mode
-            b'\x1b[6n'          # Ask for cursor position report (CPR)
-            b'\x1b[?2004h'      # Enable bracketed paste
-            b'\x1b[?25l'        # Hide cursor
-            b'\x1b[?7l'         # Disable autowrap
-            b'\x1b[0m'          # Reset attributes
-            b'\x1b[0m'          # Reset attributes
-            b'\x1b[J'           # Erase down
-            b'\x1b[0m'          # Reset attributes
-            b'In ['             # (visible text)
-            b'\x1b[0m'          # Reset attributes
-            b'1'                # (visible text)
-            b'\x1b[0m'          # Reset attributes
-            b']: '              # (visible text)
-            b'\x1b[8D'          # ???
-            b'\x1b[8C'          # ???
-            b'\x1b[?12l'        # Stop blinking cursor
-            b'\x1b[?25h'        # Show cursor
-            )
+
+        # prompt = (
+        #     b'\r\n'             # Newline
+        #     b'\x1b[?1l'         # Put terminal in cursor mode
+        #     b'\x1b[6n'          # Ask for cursor position report (CPR)
+        #     b'\x1b[?2004h'      # Enable bracketed paste
+        #     b'\x1b[?25l'        # Hide cursor
+        #     b'\x1b[?7l'         # Disable autowrap
+        #     b'\x1b[0m'          # Reset attributes
+        #     b'\x1b[0m'          # Reset attributes
+        #     b'\x1b[J'           # Erase down
+        #     b'\x1b[0m'          # Reset attributes
+        #     b'In ['             # (visible text)
+        #     b'\x1b[0m'          # Reset attributes
+        #     b'1'                # (visible text)
+        #     b'\x1b[0m'          # Reset attributes
+        #     b']: '              # (visible text)
+        #     b'\x1b[8D'          # ???
+        #     b'\x1b[8C'          # ???
+        #     b'\x1b[?12l'        # Stop blinking cursor
+        #     b'\x1b[?25h'        # Show cursor
+        #     )
+
         # p.expect_exact(prompt, timeout=10)
         # p.write(b'1\n')
         for command in commands.split(b'\n'):
