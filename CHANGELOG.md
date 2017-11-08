@@ -4,7 +4,7 @@
   @Carreau).
 - Remove Python 3.3 support
 - Add Python 3.6 support
-
+- Docs moved from readthedocs to http://www.asmeurer.com/iterm2-tools/index.html
 
 2.3 (2016-07-18)
 ----------------
