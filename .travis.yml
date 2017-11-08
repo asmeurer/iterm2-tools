@@ -46,7 +46,7 @@ script:
       cd moved_docs;
       make html;
       cd ..;
-      doctr deploy . --build-docs _build/html;
+      doctr deploy . --built-docs _build/html;
     fi
 
 sudo: false
