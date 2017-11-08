@@ -19,6 +19,7 @@ def display_image_bytes(b, filename=None, inline=1):
 
     """
     sys.stdout.buffer.write(image_bytes(b, filename=filename, inline=inline))
+    sys.stdout.write('\n')
 
 def image_bytes(b, filename=None, inline=1):
     """
