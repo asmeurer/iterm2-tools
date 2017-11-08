@@ -1,10 +1,13 @@
+env:
+  global:
+    - secure: "iyvpTErjiisUgM0hFHSi7R+iwwsvJIjeXb8fdnV+iyTi1yfGs2QNUAbHOR5DUOvvDaTvlYysZccVFJCKIXKGLKAlm6Yf/SyQ9MfBsZIzaPkh9qzw4cviimIDayxlpkdLGBrNLeKlZ8r+HcUrorAm5XcqBtP+8naQstxstwHFJAZpKdq+I9ZWbx0LKiSLl3dLDA0cgWVCMzC8F1COF2ixFW2slV9eAM7MOe7Zuh7Ly0C48m0pOjMSCTI8fBWckZud2c0n7GaTDf/GYOXq2Cdml6AKUcAeNtVU/ggOwLgH3D2DloUG8LToPa20EOiILij+L0V2ScamzhVIMy00+Pwa8vkicqdcw9I2YCz5OblKyrqHme2ADI3nwkd8k1s2T3DyJTICblmTgalaOOCV2K54kEFDFkYm2KqnMvPVMntzo9SXlro0WnYX4D1ldU0BFVPNiPrJfegcixwDWdIbuVTlzQOk0mjjw4+C8EsnDjmyKLBdFe5RyJK3zkJn/rOtNMaHA4Fv7pq0/pLtjQ5MetnvpACZn8kfMWO2ntirMdfY14uYKbxTaqei7SnXC4Z5uobBABZbnHINuXtXBBoIjR/jctyBS0o2pk2gGzuOKjKCHNcH3gJkKXasRmqJeIrmbtbPqzQaaNe5fPTvYewgUrWRNb/yOnMkCsS9HY3ch4crGKQ="
+
 language: python
 python:
   - "2.7"
-  - "3.3"
   - "3.4"
   - "3.5"
-  - "3.5-dev"
+  - "3.6"
   - "nightly"
 
 env:
@@ -13,8 +16,11 @@ env:
     - IPYTHON=""
 
 matrix:
+  include:
+    - python: "3.6"
+      env:
+        - DOCS="true"
   allow_failures:
-    - python: "3.5-dev"
     - python: "nightly"
 
 install: "pip install ipython$IPYTHON pyflakes"
@@ -25,8 +31,22 @@ after_success:
   - codecov
 
 script:
+  - set -e
   - shopt -s extglob globstar
-  - py.test --cov=./
-  - pyflakes iterm2_tools/**/!(__init__).py setup.py
+  - if [[ "${DOCS}" != "true" ]]; then
+      py.test --cov=./;
+    fi
+  - if [[ "${DOCS}" != "true" ]]; then
+      pyflakes iterm2_tools/**/!(__init__).py setup.py;
+    fi
+  - if [[ "${DOCS}" == "true" ]]; then
+      pip install doctr sphinx;
+      cd docs;
+      make html;
+      cd moved_docs;
+      make html;
+      cd ..;
+      doctr deploy . --built-docs _build/html;
+    fi
 
 sudo: false
