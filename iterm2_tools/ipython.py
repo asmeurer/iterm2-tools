@@ -128,20 +128,11 @@ def wrap_prompts_class(Klass):
 
         def in_prompt_tokens(self, cli=None):
             return  [
-                     ## Strangely works here
-                     (ZeroWidthEscape, BEFORE_OUTPUT),
-                     (ZeroWidthEscape, AFTER_OUTPUT),
                      (ZeroWidthEscape, last_status(self.shell)+BEFORE_PROMPT),
                     ]+\
                     super(ITerm2IPythonPrompt, self).in_prompt_tokens(cli)+\
                     [(ZeroWidthEscape, AFTER_PROMPT)]
 
-        def out_prompt_tokens(self):
-            return  super(ITerm2IPythonPrompt, self).out_prompt_tokens()+\
-                    [
-                     ## but not here
-                     #(ZeroWidthEscape, BEFORE_OUTPUT),
-                    ]
 
     return ITerm2IPythonPrompt
 
@@ -150,6 +141,7 @@ def load_ipython_extension_prompt_toolkit(ipython):
 
     from IPython.terminal.prompts import Prompts
     ipython.prompts = wrap_prompts_class(Prompts)(ipython)
+    ipython.events.register('pre_execute', before_output)
 
 
 def load_ipython_extension_readline(ipython):
