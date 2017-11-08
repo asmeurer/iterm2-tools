@@ -1,3 +1,11 @@
+3.0 (..........)
+----------------
+- Fix IPython shell integration with the latest version of IPython (thanks
+  @Carreau).
+- Remove Python 3.3 support
+- Add Python 3.6 support
+
+
 2.3 (2016-07-18)
 ----------------
 - Fix file name and size info for the image display.
