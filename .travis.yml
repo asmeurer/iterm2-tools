@@ -34,8 +34,12 @@ after_success:
 script:
   - set -e
   - shopt -s extglob globstar
-  - py.test --cov=./
-  - pyflakes iterm2_tools/**/!(__init__).py setup.py
+  - if [[ "${DOCS}" != "true" ]]; then
+      py.test --cov=./;
+    fi
+  - if [[ "${DOCS}" != "true" ]]; then
+      pyflakes iterm2_tools/**/!(__init__).py setup.py;
+    fi
   - if [[ "${DOCS}" == "true" ]]; then
       pip install doctr sphinx;
       cd docs;
