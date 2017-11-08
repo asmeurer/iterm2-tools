@@ -44,7 +44,7 @@ script:
       pip install doctr sphinx;
       cd docs;
       make html;
-      doctr deploy .
+      doctr deploy .;
     fi
 
 sudo: false
