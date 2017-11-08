@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Images &#8212; iTerm2 Tools 2.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Shell Integration" href="shell_integration.html" />
+    <link rel="prev" title="iTerm2 Tools" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="images">
+<h1>Images<a class="headerlink" href="#images" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-iterm2_tools.images">
+<span id="functions"></span><h2>Functions<a class="headerlink" href="#module-iterm2_tools.images" title="Permalink to this headline">¶</a></h2>
+<p>Functions for displaying images inline in iTerm2.</p>
+<p>See <a class="reference external" href="https://iterm2.com/images.html">https://iterm2.com/images.html</a>.</p>
+<dl class="function">
+<dt id="iterm2_tools.images.display_image_bytes">
+<code class="descclassname">iterm2_tools.images.</code><code class="descname">display_image_bytes</code><span class="sig-paren">(</span><em>b</em>, <em>filename=None</em>, <em>inline=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/images.html#display_image_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.images.display_image_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the image given by the bytes b in the terminal.</p>
+<p>If filename=None the filename defaults to “Unnamed file”.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="iterm2_tools.images.display_image_file">
+<code class="descclassname">iterm2_tools.images.</code><code class="descname">display_image_file</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/images.html#display_image_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.images.display_image_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display an image in the terminal.</p>
+<p>A newline is not printed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="iterm2_tools.images.image_bytes">
+<code class="descclassname">iterm2_tools.images.</code><code class="descname">image_bytes</code><span class="sig-paren">(</span><em>b</em>, <em>filename=None</em>, <em>inline=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/images.html#image_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.images.image_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>DEPRECATED</strong>: Use display_image_bytes.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="shell-sequences">
+<h2>Shell sequences<a class="headerlink" href="#shell-sequences" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="iterm2_tools.images.IMAGE_CODE">
+<code class="descclassname">images.</code><code class="descname">IMAGE_CODE</code><em class="property"> = '\x1b]1337;File=name={name};inline={inline};size={size}:{base64_img}\x07'</em><a class="headerlink" href="#iterm2_tools.images.IMAGE_CODE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Images</a><ul>
+<li><a class="reference internal" href="#module-iterm2_tools.images">Functions</a></li>
+<li><a class="reference internal" href="#shell-sequences">Shell sequences</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">iTerm2 Tools</a></li>
+      <li>Next: <a href="shell_integration.html" title="next chapter">Shell Integration</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/images.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Aaron Meurer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/images.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/asmeurer/iterm2-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

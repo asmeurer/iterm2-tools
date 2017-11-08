@@ -1,0 +1,151 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>IPython &#8212; iTerm2 Tools 2.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Projects using iTerm2 tools" href="examples.html" />
+    <link rel="prev" title="Shell Integration" href="shell_integration.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ipython">
+<h1>IPython<a class="headerlink" href="#ipython" title="Permalink to this headline">¶</a></h1>
+<img alt="_images/ipython-example.png" src="_images/ipython-example.png" />
+<span class="target" id="module-iterm2_tools.ipython"></span><p>IPython shell integration extension</p>
+<p>Enables iTerm2 shell integration in the IPython shell.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This does not yet work with IPython 5.0. See
+<a class="reference external" href="https://github.com/asmeurer/iterm2-tools/pull/6">https://github.com/asmeurer/iterm2-tools/pull/6</a>.</p>
+</div>
+<p>To load, use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">load_ext</span> <span class="n">iterm2_tools</span><span class="o">.</span><span class="n">ipython</span>
+</pre></div>
+</div>
+<p>To load every time IPython starts, add:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">iterm2_tools.ipython</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">TerminalIPythonApp</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;iterm2_tools.ipython&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>to your IPython configuration file.</p>
+<p>Some notes about this:</p>
+<ul class="simple">
+<li>iTerm2’s shell integration only supports single line commands. For multiline
+code, the first line will be saved as the command.</li>
+<li>The “Out” prompt will be included in the captured output. This is because
+the captured output is begun as soon as the code is executed.  This is done
+so that text printed to stdout will be included (e.g., if you run
+“print(‘hello’)” there will be no “Out” prompt).</li>
+<li>If an exception is raised, the command status will be set to 1 (making the
+iTerm2 shell integration arrow turn red). Otherwise it will be set to 0.</li>
+<li>However, due to a <a class="reference external" href="https://github.com/ipython/ipython/issues/9199">bug in IPython</a>, SyntaxErrors will not
+register as failures (the arrow next to the prompt won’t turn red).</li>
+<li>This requires a version of IPython greater than 4.0.0. Otherwise, due to a
+bug in IPython, the invisible codes printed in the prompt will be read by
+IPython as not invisible, causing the “Out” prompt to indent several
+characters (however, aside from this bug, it should work fine).</li>
+<li>This code adds a <code class="docutils literal"><span class="pre">set_custom_exc</span></code> handler to IPython to check the command
+status. IPython currently only supports one exc_handler at a time, so this
+may break other code that also uses this functionality.</li>
+</ul>
+<dl class="function">
+<dt id="iterm2_tools.ipython.wrap_prompts_class">
+<code class="descclassname">iterm2_tools.ipython.</code><code class="descname">wrap_prompts_class</code><span class="sig-paren">(</span><em>Klass</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/ipython.html#wrap_prompts_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.ipython.wrap_prompts_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an IPython’s Prompt class</p>
+<p>This is needed in order for Prompt to inject the correct escape sequences
+at the right positions for shell integrations.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="shell_integration.html" title="previous chapter">Shell Integration</a></li>
+      <li>Next: <a href="examples.html" title="next chapter">Projects using iTerm2 tools</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ipython.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Aaron Meurer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/ipython.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/asmeurer/iterm2-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

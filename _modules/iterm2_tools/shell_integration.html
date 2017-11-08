@@ -1,0 +1,291 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iterm2_tools.shell_integration &#8212; iTerm2 Tools 2.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iterm2_tools.shell_integration</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Shell integration</span>
+
+<span class="sd">See https://groups.google.com/d/msg/iterm2-discuss/URKCBtS0228/rs5Ive4PCAAJ</span>
+<span class="sd">for documentation on the sequences,</span>
+<span class="sd">https://github.com/gnachman/iterm2-website/tree/master/source/misc for example</span>
+<span class="sd">implementations, and https://iterm2.com/shell_integration.html for a list of</span>
+<span class="sd">what this lets you do in iTerm2.</span>
+
+<span class="sd">Usage</span>
+<span class="sd">=====</span>
+
+<span class="sd">Say you have a basic REPL like::</span>
+
+<span class="sd">    input&gt; run-command</span>
+<span class="sd">    command output</span>
+
+<span class="sd">where ``input&gt;`` is the prompt, ``run-command`` is the command typed by the user,</span>
+<span class="sd">and ``command output`` is the output of ``run-command``. The basic REPL (in Python</span>
+<span class="sd">3), would be::</span>
+
+<span class="sd">    while True:</span>
+<span class="sd">        before_prompt()</span>
+<span class="sd">        print(&quot;input&gt; &quot;, end=&#39;&#39;)</span>
+<span class="sd">        after_prompt()</span>
+<span class="sd">        command = input()</span>
+<span class="sd">        before_output()</span>
+<span class="sd">        return_val = run_command(command)</span>
+<span class="sd">        after_output(return_val)</span>
+
+<span class="sd">(here ``return_val`` should be in the range 0-255).</span>
+
+<span class="sd">Note that it is recommended to use the functions (like ``before_prompt()``) or the</span>
+<span class="sd">context managers (like ``with Prompt()``) rather than the variables (like</span>
+<span class="sd">``BEFORE_PROMPT``) directly. These print the codes directly to stdout, avoiding</span>
+<span class="sd">potential issues with character counting.</span>
+
+<span class="sd">It may be preferable to use the context managers rather than the functions,</span>
+<span class="sd">in which case, the REPL would be::</span>
+
+<span class="sd">    while True:</span>
+<span class="sd">        with Prompt():</span>
+<span class="sd">            print(&quot;input&gt; &quot;, end=&#39;&#39;)</span>
+<span class="sd">        command = input() # raw_input() in Python 2</span>
+<span class="sd">        with Output() as o:</span>
+<span class="sd">            return_val = run_command(command)</span>
+<span class="sd">            o.set_command_status(return_val)</span>
+
+<span class="sd">However, in many cases, it is impossible to run functions before and after the</span>
+<span class="sd">prompt, e.g., when the prompt text is passed to ``(raw_)input()`` directly. In</span>
+<span class="sd">that case, you should use the codes directly, wrapped with</span>
+<span class="sd">``readline_invisible()``, like::</span>
+
+<span class="sd">    while True:</span>
+<span class="sd">        command = input(</span>
+<span class="sd">            readline_invisible(BEFORE_PROMPT) +</span>
+<span class="sd">            &quot;input&gt; &quot; +</span>
+<span class="sd">            readline_invisible(AFTER_PROMPT</span>
+<span class="sd">        ) # raw_input() in Python 2</span>
+<span class="sd">        with Output() as o:</span>
+<span class="sd">            return_val = run_command(command)</span>
+<span class="sd">            o.set_command_status(return_val)</span>
+
+<span class="sd">Using ``readline_invisible()`` is important as it tells readline to not count the</span>
+<span class="sd">codes as visible text. Without this, readline&#39;s editing and history commands</span>
+<span class="sd">will truncate text.</span>
+
+<span class="sd">Notes about iTerm2:</span>
+
+<span class="sd">- iTerm2 assumes that the prompt sequences will be presented in a reasonable</span>
+<span class="sd">  way. Using the context managers should prevent most issues.</span>
+
+<span class="sd">- The text that comes after the prompt before the first newline is read as a</span>
+<span class="sd">  command. If there is no command, or the command is just whitespace, the</span>
+<span class="sd">  output is effectively ignored (the same as if two before/after prompt</span>
+<span class="sd">  sequences were performed without any output sequence).</span>
+
+<span class="sd">- iTerm2 does  not support capturing  multiline commands, although  the output</span>
+<span class="sd">  won&#39;t  include  any part  of  the  command  if ``before_output()``  is  used</span>
+<span class="sd">  correctly.</span>
+
+<span class="sd">- iTerm2 expects there to be nothing between ``AFTER_OUTPUT`` and</span>
+<span class="sd">  ``BEFORE_PROMPT``, except possibly more shell sequences. At the time of this</span>
+<span class="sd">  writing, iTerm2&#39;s &quot;Select Output of Last Command&quot; actually selects the text</span>
+<span class="sd">  between ``BEFORE_OUTPUT`` and ``BEFORE_PROMPT``, not ``BEFORE_OUTPUT`` and</span>
+<span class="sd">  ``AFTER_OUTPUT`` as one would expect.</span>
+
+<span class="sd">- Multiline prompts are supported just fine, although the arrow will always be</span>
+<span class="sd">  presented on the first line. It is not recommended to attempt to change this</span>
+<span class="sd">  by not including part of the prompt between the prompt sequences (see the</span>
+<span class="sd">  previous bullet point).</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+<span class="c1"># The &quot;FinalTerm&quot; shell sequences</span>
+
+<span class="n">BEFORE_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]133;A</span><span class="se">\a</span><span class="s1">&#39;</span>
+<span class="n">AFTER_PROMPT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]133;B</span><span class="se">\a</span><span class="s1">&#39;</span>
+<span class="n">BEFORE_OUTPUT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]133;C</span><span class="se">\a</span><span class="s1">&#39;</span>
+<span class="n">AFTER_OUTPUT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]133;D;</span><span class="si">{command_status}</span><span class="se">\a</span><span class="s1">&#39;</span> <span class="c1"># command_status is the command status, 0-255</span>
+
+<span class="c1"># iTerm2 specific sequences. All optional.</span>
+
+<span class="n">SET_USER_VAR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]1337;SetUserVar=</span><span class="si">{user_var_key}</span><span class="s1">=</span><span class="si">{user_var_value}</span><span class="se">\a</span><span class="s1">&#39;</span>
+
+<span class="c1"># The current shell integration version is 1. We don&#39;t use this as an outdated</span>
+<span class="c1"># shell integration version would only prompt the user to upgrade the</span>
+<span class="c1"># integration that comes with iTerm2.</span>
+<span class="n">SHELL_INTEGRATION_VERSION</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]1337;ShellIntegrationVersion=</span><span class="si">{shell_integration_version}</span><span class="se">\a</span><span class="s1">&#39;</span>
+
+<span class="c1"># REMOTE_HOST and CURRENT_DIR are best echoed right after AFTER_OUTPUT.</span>
+
+<span class="c1"># remote_host_hostname should be the fully qualified hostname. Integrations</span>
+<span class="c1"># should allow users to set remote_host_hostname in case DNS is slow.</span>
+<span class="n">REMOTE_HOST</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]1337;RemoteHost=</span><span class="si">{remote_host_username}</span><span class="s1">@</span><span class="si">{remote_host_hostname}</span><span class="se">\a</span><span class="s1">&#39;</span>
+<span class="n">CURRENT_DIR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]1337;CurrentDir=</span><span class="si">{current_dir}</span><span class="se">\a</span><span class="s1">&#39;</span>
+
+<div class="viewcode-block" id="readline_invisible"><a class="viewcode-back" href="../../shell_integration.html#iterm2_tools.shell_integration.readline_invisible">[docs]</a><span class="k">def</span> <span class="nf">readline_invisible</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wrap ``code`` with the special characters to tell readline that it is</span>
+<span class="sd">    invisible.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\001</span><span class="si">%s</span><span class="se">\002</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">code</span></div>
+
+<div class="viewcode-block" id="before_prompt"><a class="viewcode-back" href="../../shell_integration.html#iterm2_tools.shell_integration.before_prompt">[docs]</a><span class="k">def</span> <span class="nf">before_prompt</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shell sequence to be run before the prompt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">BEFORE_PROMPT</span><span class="p">)</span>
+    <span class="c1"># Flushing is important as the command timing feature is based on</span>
+    <span class="c1"># BEFORE_OUTPUT and BEFORE_PROMPT</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="after_prompt"><a class="viewcode-back" href="../../shell_integration.html#iterm2_tools.shell_integration.after_prompt">[docs]</a><span class="k">def</span> <span class="nf">after_prompt</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shell sequence to be run after the prompt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">AFTER_PROMPT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="before_output"><a class="viewcode-back" href="../../shell_integration.html#iterm2_tools.shell_integration.before_output">[docs]</a><span class="k">def</span> <span class="nf">before_output</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shell sequence to be run before the command output.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">BEFORE_OUTPUT</span><span class="p">)</span>
+    <span class="c1"># Flushing is important as the command timing feature is based on</span>
+    <span class="c1"># BEFORE_OUTPUT and BEFORE_PROMPT</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="after_output"><a class="viewcode-back" href="../../shell_integration.html#iterm2_tools.shell_integration.after_output">[docs]</a><span class="k">def</span> <span class="nf">after_output</span><span class="p">(</span><span class="n">command_status</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shell sequence to be run after the command output.</span>
+
+<span class="sd">    The ``command_status`` should be in the range 0-255.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">command_status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;command_status must be an integer in the range 0-255&quot;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">AFTER_OUTPUT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command_status</span><span class="o">=</span><span class="n">command_status</span><span class="p">))</span>
+    <span class="c1"># Flushing is important as the command timing feature maybe based on</span>
+    <span class="c1"># AFTER_OUTPUT in the future.</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Prompt"><a class="viewcode-back" href="../../shell_integration.html#iterm2_tools.shell_integration.Prompt">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">Prompt</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    iTerm2 shell integration prompt context manager</span>
+
+<span class="sd">    Use like::</span>
+
+<span class="sd">        with Prompt():</span>
+<span class="sd">            print(&quot;Prompt:&quot;, end=&#39;&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">before_prompt</span><span class="p">()</span>
+    <span class="k">yield</span>
+    <span class="n">after_prompt</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Output"><a class="viewcode-back" href="../../shell_integration.html#iterm2_tools.shell_integration.Output">[docs]</a><span class="k">class</span> <span class="nc">Output</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    iTerm2 shell integration output context manager</span>
+
+<span class="sd">    Use like::</span>
+
+<span class="sd">        with Output() as o:</span>
+<span class="sd">            print(&quot;output&quot;)</span>
+<span class="sd">            o.set_command_status(status)</span>
+
+<span class="sd">    The command status should be in the range 0-255. The default status is 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command_status</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">set_command_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command_status</span> <span class="o">=</span> <span class="n">status</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">before_output</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="n">after_output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">command_status</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Aaron Meurer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/asmeurer/iterm2-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

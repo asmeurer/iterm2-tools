@@ -1,0 +1,262 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iterm2_tools.ipython &#8212; iTerm2 Tools 2.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iterm2_tools.ipython</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">IPython shell integration extension</span>
+
+<span class="sd">Enables iTerm2 shell integration in the IPython shell.</span>
+
+<span class="sd">.. note::</span>
+
+<span class="sd">   This does not yet work with IPython 5.0. See</span>
+<span class="sd">   https://github.com/asmeurer/iterm2-tools/pull/6.</span>
+
+<span class="sd">To load, use::</span>
+
+<span class="sd">    %load_ext iterm2_tools.ipython</span>
+
+<span class="sd">To load every time IPython starts, add::</span>
+
+<span class="sd">    try:</span>
+<span class="sd">        import iterm2_tools.ipython</span>
+<span class="sd">        c.TerminalIPythonApp.extensions.append(&#39;iterm2_tools.ipython&#39;)</span>
+<span class="sd">    except ImportError:</span>
+<span class="sd">        pass</span>
+
+<span class="sd">to your IPython configuration file.</span>
+
+<span class="sd">Some notes about this:</span>
+
+<span class="sd">- iTerm2&#39;s shell integration only supports single line commands. For multiline</span>
+<span class="sd">  code, the first line will be saved as the command.</span>
+
+<span class="sd">- The &quot;Out&quot; prompt will be included in the captured output. This is because</span>
+<span class="sd">  the captured output is begun as soon as the code is executed.  This is done</span>
+<span class="sd">  so that text printed to stdout will be included (e.g., if you run</span>
+<span class="sd">  &quot;print(&#39;hello&#39;)&quot; there will be no &quot;Out&quot; prompt).</span>
+
+<span class="sd">- If an exception is raised, the command status will be set to 1 (making the</span>
+<span class="sd">  iTerm2 shell integration arrow turn red). Otherwise it will be set to 0.</span>
+
+<span class="sd">- However, due to a `bug in IPython</span>
+<span class="sd">  &lt;https://github.com/ipython/ipython/issues/9199&gt;`_, SyntaxErrors will not</span>
+<span class="sd">  register as failures (the arrow next to the prompt won&#39;t turn red).</span>
+
+<span class="sd">- This requires a version of IPython greater than 4.0.0. Otherwise, due to a</span>
+<span class="sd">  bug in IPython, the invisible codes printed in the prompt will be read by</span>
+<span class="sd">  IPython as not invisible, causing the &quot;Out&quot; prompt to indent several</span>
+<span class="sd">  characters (however, aside from this bug, it should work fine).</span>
+
+<span class="sd">- This code adds a ``set_custom_exc`` handler to IPython to check the command</span>
+<span class="sd">  status. IPython currently only supports one exc_handler at a time, so this</span>
+<span class="sd">  may break other code that also uses this functionality.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">IPython.core.prompts</span> <span class="k">import</span> <span class="n">LazyEvaluate</span>
+<span class="kn">from</span> <span class="nn">.shell_integration</span> <span class="k">import</span> <span class="p">(</span><span class="n">BEFORE_PROMPT</span><span class="p">,</span> <span class="n">AFTER_PROMPT</span><span class="p">,</span> <span class="n">before_output</span><span class="p">,</span>
+    <span class="n">AFTER_OUTPUT</span><span class="p">,</span> <span class="n">readline_invisible</span><span class="p">)</span>
+
+<span class="c1"># Some implementation notes:</span>
+
+<span class="c1"># - We have to add the literal command strings to the prompt. We can&#39;t use the</span>
+<span class="c1">#   functions (which print the codes to stdout) because they are all evaluated</span>
+<span class="c1">#   at once before the prompt is shown, and we need them to be shown in the</span>
+<span class="c1">#   right order. There is no way to override this, as IPython calls</span>
+<span class="c1">#   (raw_)input() with the prompt text directly.</span>
+
+<span class="c1"># - To implement the nonzero command status when an exception is raised, we</span>
+<span class="c1">#   have to use IPython&#39;s set_custom_exc handler functionality. We can&#39;t use</span>
+<span class="c1">#   sys.excepthook because IPython uses it to manage crashes.</span>
+
+<span class="c1">#   To do this, the set_custom_exc handler mutates a global status and then</span>
+<span class="c1">#   shows the traceback (the same thing IPython does by default when there is</span>
+<span class="c1">#   no handler set). We then use a LazyEvaluate function for the after_output</span>
+<span class="c1">#   code so that it is evaluated dynamically every time the prompt is displayed.</span>
+
+<span class="c1"># - It is important to wrap all codes that are passed as strings in</span>
+<span class="c1">#   readline_invisible(), as otherwise they will screw up readline&#39;s character</span>
+<span class="c1">#   counting. Unfortunately, versions of IPython &lt;= 4.0.0 do not count</span>
+<span class="c1">#   readline invisible characters correctly when computing the prompt width,</span>
+<span class="c1">#   so the &quot;Out&quot; prompt will be indented too far.</span>
+
+<span class="c1"># - before_output is implemented using the pre_execute event handler. This is</span>
+<span class="c1">#   preferred to setting the &quot;Out&quot; prompt because it will include text printed</span>
+<span class="c1">#   directly to stdout (i.e., code that calls print()). The downside to this</span>
+<span class="c1">#   is that if there is an &quot;Out&quot; prompt, it will be included in the captured</span>
+<span class="c1">#   output.  However, assumedly this functionality will be most often used for</span>
+<span class="c1">#   code that prints to stdout rather than for the repr of an interactive</span>
+<span class="c1">#   object.</span>
+
+<span class="k">global</span> <span class="n">status</span>
+<span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">last_status</span><span class="p">(</span><span class="n">shell</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">AFTER_OUTPUT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command_status</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span> <span class="k">if</span> <span class="n">shell</span><span class="o">.</span><span class="n">last_execution_succeeded</span> <span class="k">else</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="nd">@LazyEvaluate</span>
+<span class="k">def</span> <span class="nf">ipython_after_output</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">status</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">readline_invisible</span><span class="p">(</span><span class="n">AFTER_OUTPUT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command_status</span><span class="o">=</span><span class="n">status</span><span class="p">))</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+<span class="k">def</span> <span class="nf">exc_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">tb_offset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">status</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">showtraceback</span><span class="p">()</span>
+
+<span class="c1"># This is called by IPython when the extension is loaded. `ipython` is the</span>
+<span class="c1"># currently active InteractiveShell instance. This should only be called once</span>
+<span class="c1"># (despite what the IPython docs say), unless the user calls %reload_ext,</span>
+<span class="c1"># which does a full module reload, in which case they are on their own.</span>
+<span class="k">def</span> <span class="nf">load_ipython_extension</span><span class="p">(</span><span class="n">ipython</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ipython</span><span class="p">,</span> <span class="s1">&#39;prompts&#39;</span><span class="p">):</span>
+        <span class="n">load_ipython_extension_prompt_toolkit</span><span class="p">(</span><span class="n">ipython</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">load_ipython_extension_readline</span><span class="p">(</span><span class="n">ipython</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="wrap_prompts_class"><a class="viewcode-back" href="../../ipython.html#iterm2_tools.ipython.wrap_prompts_class">[docs]</a><span class="k">def</span> <span class="nf">wrap_prompts_class</span><span class="p">(</span><span class="n">Klass</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wrap an IPython&#39;s Prompt class</span>
+
+<span class="sd">    This is needed in order for Prompt to inject the correct escape sequences</span>
+<span class="sd">    at the right positions for shell integrations.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">prompt_toolkit.token</span> <span class="k">import</span> <span class="n">ZeroWidthEscape</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Klass</span>
+
+    <span class="k">class</span> <span class="nc">ITerm2IPythonPrompt</span><span class="p">(</span><span class="n">Klass</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">in_prompt_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cli</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span>  <span class="p">[</span>
+                     <span class="p">(</span><span class="n">ZeroWidthEscape</span><span class="p">,</span> <span class="n">last_status</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="p">)</span><span class="o">+</span><span class="n">BEFORE_PROMPT</span><span class="p">),</span>
+                    <span class="p">]</span><span class="o">+</span>\
+                    <span class="nb">super</span><span class="p">(</span><span class="n">ITerm2IPythonPrompt</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">in_prompt_tokens</span><span class="p">(</span><span class="n">cli</span><span class="p">)</span><span class="o">+</span>\
+                    <span class="p">[(</span><span class="n">ZeroWidthEscape</span><span class="p">,</span> <span class="n">AFTER_PROMPT</span><span class="p">)]</span>
+
+
+    <span class="k">return</span> <span class="n">ITerm2IPythonPrompt</span></div>
+
+
+<span class="k">def</span> <span class="nf">load_ipython_extension_prompt_toolkit</span><span class="p">(</span><span class="n">ipython</span><span class="p">):</span>
+
+    <span class="kn">from</span> <span class="nn">IPython.terminal.prompts</span> <span class="k">import</span> <span class="n">Prompts</span>
+    <span class="n">ipython</span><span class="o">.</span><span class="n">prompts</span> <span class="o">=</span> <span class="n">wrap_prompts_class</span><span class="p">(</span><span class="n">Prompts</span><span class="p">)(</span><span class="n">ipython</span><span class="p">)</span>
+    <span class="n">ipython</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;pre_execute&#39;</span><span class="p">,</span> <span class="n">before_output</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">load_ipython_extension_readline</span><span class="p">(</span><span class="n">ipython</span><span class="p">):</span>
+    <span class="n">ipython</span><span class="o">.</span><span class="n">prompt_manager</span><span class="o">.</span><span class="n">lazy_evaluate_fields</span><span class="p">[</span><span class="s1">&#39;before_prompt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">readline_invisible</span><span class="p">(</span><span class="n">BEFORE_PROMPT</span><span class="p">)</span>
+    <span class="n">ipython</span><span class="o">.</span><span class="n">prompt_manager</span><span class="o">.</span><span class="n">lazy_evaluate_fields</span><span class="p">[</span><span class="s1">&#39;after_prompt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">readline_invisible</span><span class="p">(</span><span class="n">AFTER_PROMPT</span><span class="p">)</span>
+    <span class="n">ipython</span><span class="o">.</span><span class="n">prompt_manager</span><span class="o">.</span><span class="n">lazy_evaluate_fields</span><span class="p">[</span><span class="s1">&#39;after_output&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ipython_after_output</span>
+
+    <span class="n">orig_in_template</span> <span class="o">=</span> <span class="n">ipython</span><span class="o">.</span><span class="n">prompt_manager</span><span class="o">.</span><span class="n">in_template</span>
+    <span class="c1"># Heads up: The color codes from the default color themes (Linux and</span>
+    <span class="c1"># LightBG) are not part of the in_template. Rather, they are added by</span>
+    <span class="c1"># IPython around the in_template when it renders the prompt, meaning they</span>
+    <span class="c1"># won&#39;t be between before_prompt and after_prompt. I don&#39;t know of any</span>
+    <span class="c1"># issues caused by this, but it&#39;s worth knowing.</span>
+    <span class="n">ipython</span><span class="o">.</span><span class="n">prompt_manager</span><span class="o">.</span><span class="n">in_template</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{after_output}{before_prompt}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">orig_in_template</span> <span class="o">+</span>
+        <span class="s2">&quot;</span><span class="si">{after_prompt}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">ipython</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;pre_execute&#39;</span><span class="p">,</span> <span class="n">before_output</span><span class="p">)</span>
+
+    <span class="n">ipython</span><span class="o">.</span><span class="n">set_custom_exc</span><span class="p">((</span><span class="ne">BaseException</span><span class="p">,),</span> <span class="n">exc_handler</span><span class="p">)</span>
+
+
+<span class="c1"># TODO: Implement this</span>
+
+<span class="c1"># def unload_ipython_extension(ipython):</span>
+<span class="c1">#     # If you want your extension to be unloadable, put that logic here.</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Aaron Meurer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/asmeurer/iterm2-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
