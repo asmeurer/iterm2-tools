@@ -123,7 +123,10 @@ html_theme_options = {
     'github_repo': 'iterm2-tools',
     'github_banner': True,
     'logo_name': True,
+    'travis_button': True,
+    'show_related': True,
     }
+
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
