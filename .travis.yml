@@ -17,6 +17,7 @@ env:
     - IPYTHON=""
 
 matrix:
+  include:
     - python: "3.6"
       env:
         - DOCS="true"
