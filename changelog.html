@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CHANGELOG &#8212; iTerm2 Tools 2.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Projects using iTerm2 tools" href="examples.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="changelog">
+<h1>CHANGELOG<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.0 (……….)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Undeprecate <code class="docutils literal"><span class="pre">image_bytes</span></code></li>
+<li><strong>BACKWARDS INCOMPATIBLE CHANGE:</strong> <code class="docutils literal"><span class="pre">display_image_bytes</span></code> now displays the
+image to the terminal. Use <code class="docutils literal"><span class="pre">image_bytes</span></code> to get the bytes string to
+display.</li>
+<li><strong>BACKWARDS INCOMPATIBLE CHANGE:</strong> <code class="docutils literal"><span class="pre">image_bytes</span></code> now returns a bytes
+string in Python 3. To write this to stdout, use <code class="docutils literal"><span class="pre">sys.stdout.buffer.write</span></code>,
+or use <code class="docutils literal"><span class="pre">display_image_bytes</span></code> on the image.</li>
+<li>Fix IPython shell integration with the latest version of IPython (thanks
+&#64;Carreau).</li>
+<li>Remove Python 3.3 support</li>
+<li>Add Python 3.6 support</li>
+<li>Docs moved from readthedocs to <a class="reference external" href="http://www.asmeurer.com/iterm2-tools/index.html">http://www.asmeurer.com/iterm2-tools/index.html</a></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>2.3 (2016-07-18)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fix file name and size info for the image display.</li>
+<li>API break: the file name format string in <code class="docutils literal"><span class="pre">IMAGE_CODE</span></code> is now <code class="docutils literal"><span class="pre">{name}</span></code> (was
+previously <code class="docutils literal"><span class="pre">{file}</span></code>.</li>
+<li>Flush stdout in before_output and before_prompt. This fixes the command
+timing feature in the IPython integration.</li>
+<li>NOTE: The IPython shell integration in this version (and previous versions)
+does not work with IPython 5.0.</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>2.2 (2015-08-24)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Rename image_bytes to display_image_bytes (image_bytes has been kept for
+backwards compatibility for now).</li>
+<li>Add readline_invisible() to shell_integration.</li>
+<li>Add iterm2_tools.ipython IPython extension to enable shell integration in
+IPython.</li>
+<li>Enable Travis CI tests.</li>
+<li>Add Sphinx documentation hosted at <a class="reference external" href="https://iterm2-tools.readthedocs.org/">https://iterm2-tools.readthedocs.org/</a>.</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>2.1 (2015-08-06)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Add context managers to shell_integration.</li>
+<li>Add an example REPL showing how to use the shell integration.</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>2.0 (2015-08-06)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Add iterm2_tools.shell_integration, with some functions for working with
+iTerm2’s shell integration.</li>
+</ul>
+<div class="section" id="breaking-changes">
+<h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Remove <code class="docutils literal"><span class="pre">iterm2_</span></code> from <code class="docutils literal"><span class="pre">iterm2_tools.images</span></code> function names.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>1.0 (2015-08-04)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>First release</li>
+<li>Add iterm2_tools.images with tools for displaying images in iTerm2. Copied
+from catimg.iterm2.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CHANGELOG</a><ul>
+<li><a class="reference internal" href="#id1">3.0 (……….)</a></li>
+<li><a class="reference internal" href="#id2">2.3 (2016-07-18)</a></li>
+<li><a class="reference internal" href="#id3">2.2 (2015-08-24)</a></li>
+<li><a class="reference internal" href="#id4">2.1 (2015-08-06)</a></li>
+<li><a class="reference internal" href="#id5">2.0 (2015-08-06)</a><ul>
+<li><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id6">1.0 (2015-08-04)</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="examples.html" title="previous chapter">Projects using iTerm2 tools</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/changelog.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Aaron Meurer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/changelog.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/asmeurer/iterm2-tools" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

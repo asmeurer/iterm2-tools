@@ -59,20 +59,22 @@
 <span class="sd">    If filename=None the filename defaults to &quot;Unnamed file&quot;.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="n">inline</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.image_bytes">[docs]</a><span class="k">def</span> <span class="nf">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a bytes string that displays image given by bytes b in the terminal</span>
+
+<span class="sd">    If filename=None, the filename defaults to &quot;Unnamed file&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">((</span><span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;Unnamed file&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span>
         <span class="s1">&#39;inline&#39;</span><span class="p">:</span> <span class="n">inline</span><span class="p">,</span>
         <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">),</span>
         <span class="s1">&#39;base64_img&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span>
         <span class="p">}</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">IMAGE_CODE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">))</span></div>
-
-<span class="c1"># Backwards compatibility</span>
-<div class="viewcode-block" id="image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.image_bytes">[docs]</a><span class="k">def</span> <span class="nf">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    **DEPRECATED**: Use display_image_bytes.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">display_image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="n">inline</span><span class="p">)</span></div>
+    <span class="c1"># IMAGE_CODE is a string because bytes doesn&#39;t support formatting</span>
+    <span class="k">return</span> <span class="n">IMAGE_CODE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="display_image_file"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.display_image_file">[docs]</a><span class="k">def</span> <span class="nf">display_image_file</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -81,7 +83,7 @@
 <span class="sd">    A newline is not printed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">display_image_bytes</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">filename</span><span class="o">=</span><span class="n">fn</span><span class="p">))</span></div>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">filename</span><span class="o">=</span><span class="n">fn</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

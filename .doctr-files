@@ -3,6 +3,7 @@
 ./_modules/iterm2_tools/images.html
 ./_modules/iterm2_tools/ipython.html
 ./_modules/iterm2_tools/shell_integration.html
+./_sources/changelog.rst.txt
 ./_sources/examples.rst.txt
 ./_sources/images.rst.txt
 ./_sources/index.rst.txt
@@ -30,6 +31,7 @@
 ./_static/up-pressed.png
 ./_static/up.png
 ./_static/websupport.js
+./changelog.html
 ./examples.html
 ./genindex.html
 ./images.html
