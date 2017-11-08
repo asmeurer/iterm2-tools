@@ -1,5 +1,12 @@
 3.0 (..........)
 ----------------
+- Undeprecate ``image_bytes``
+- **BACKWARDS INCOMPATIBLE CHANGE:** ``display_image_bytes`` now displays the
+  image to the terminal. Use ``image_bytes`` to get the bytes string to
+  display.
+- **BACKWARDS INCOMPATIBLE CHANGE:** ``image_bytes`` now returns a bytes
+  string in Python 3. To write this to stdout, use ``sys.stdout.buffer.write``,
+  or use ``display_image_bytes`` on the image.
 - Fix IPython shell integration with the latest version of IPython (thanks
   @Carreau).
 - Remove Python 3.3 support
