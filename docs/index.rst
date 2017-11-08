@@ -42,6 +42,7 @@ Contents:
    shell_integration
    ipython
    examples
+   changelog
 
 Indices and tables
 ==================
