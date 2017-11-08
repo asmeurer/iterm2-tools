@@ -1,4 +1,7 @@
 env:
+  matrix:
+    - IPYTHON="<5"
+    - IPYTHON=""
   global:
     - secure: "RCIB1ZZ2X2wEqGP934ytd7jK/kqTe4RoLL8kU1qOtuwRZ7LT+MKIG8Ox4sNv7MTGYVD1DJUQhuAkiAshsH+rgMIhxxlkGJQ9VIZQNEhn6VahhE1+brF2mVSWnmQ1I5xVGAL3/P+XO3sfBFVhaXEoGc7nijqdk1NBsoanGIwYpqu2qZjtcTulCkvQDueJBRvNLq6zNG00g8hHgG2wkfJxx8AzN+oV5ShgRk+Xf8nw8y5/eaOn+3oXcpLVpXB7Njg8MCAJC8zkbGuPz7lF6c1mWJMKbf3ZmHlBD3SlYHOI+EXiMmvt0WnUDgh7lr3rr6QUSJFM10THIFR7q8R1CMaqDwastmKWTBRG5qOFmt7Oh2foENFYNc3iGH/GspDQBIQZFLRJ+7a1duw4/ypNUEXzGSlbUoI73NTf1AQo1LLb/alSQuhk4IRqenMqvaOSJOSsriRdBH2Zjxx3TghTQcN58NyYuoV7KvgrAFX1F2dl4KlmgQlb5mt6sMIp47LgdT/GrP15jqmPiR9THA0Oi+5dquJgZifGHQ/0CmVZ09JxscDpclEZgbITLbQQXZEs350vJFpykwxGgY0GNIMXUqFIE4gH/rz6rNEDIRIphXsxgPNP0oOU6HaeeMSelr5+zufrbwoAREeAq6ZHVGm3gnC061l7VpEASGp73/dXn2/s2Js="
 
@@ -9,11 +12,6 @@ python:
   - "3.5"
   - "3.6"
   - "nightly"
-
-env:
-  matrix:
-    - IPYTHON="<5"
-    - IPYTHON=""
 
 matrix:
   include:
