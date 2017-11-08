@@ -11,13 +11,12 @@ python:
   - "3.6"
   - "nightly"
 
+env:
+  matrix:
+    - IPYTHON="<5"
+    - IPYTHON=""
 
 matrix:
-  include:
-    - env:
-        - IPYTHON="<5"
-    - env:
-        - IPYTHON=""
     - python: "3.6"
       env:
         - DOCS="true"
