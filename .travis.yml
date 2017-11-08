@@ -43,7 +43,10 @@ script:
       pip install doctr sphinx;
       cd docs;
       make html;
-      doctr deploy .;
+      cd moved_docs;
+      make html;
+      cd ..;
+      doctr deploy . --build-docs _build/html;
     fi
 
 sudo: false
