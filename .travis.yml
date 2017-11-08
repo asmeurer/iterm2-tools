@@ -23,11 +23,6 @@ matrix:
 
 install: "pip install ipython$IPYTHON pyflakes"
 
-before_install:
-  - pip install codecov pytest-cov
-after_success:
-  - codecov
-
 script:
   - set -e
   - shopt -s extglob globstar
