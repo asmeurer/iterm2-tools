@@ -31,14 +31,28 @@ def display_image_bytes(b, filename=None, inline=1, width='auto', height='auto')
     See https://www.iterm2.com/documentation-images.html
 
     """
-    sys.stdout.buffer.write(image_bytes(b, filename=filename, inline=inline))
+    sys.stdout.buffer.write(image_bytes(b, filename=filename, inline=inline,
+        width=width, height=height))
     sys.stdout.write('\n')
 
-def image_bytes(b, filename=None, inline=1):
+def image_bytes(b, filename=None, inline=1, width='auto', height='auto'):
     """
     Return a bytes string that displays image given by bytes b in the terminal
 
     If filename=None, the filename defaults to "Unnamed file"
+
+    width and height are strings, following the format
+
+    N: N character cells.
+
+    Npx: N pixels.
+
+    N%: N percent of the session's width or height.
+
+    'auto': The image's inherent size will be used to determine an appropriate
+            dimension (the default).
+
+    See https://www.iterm2.com/documentation-images.html
     """
     data = {
         'name': base64.b64encode((filename or 'Unnamed file').encode('utf-8')).decode('ascii'),
