@@ -31,6 +31,15 @@ def display_image_bytes(b, filename=None, inline=1, width='auto', height='auto')
     See https://www.iterm2.com/documentation-images.html
 
     """
+    sys.stdout.buffer.write(image_bytes(b, filename=filename, inline=inline))
+    sys.stdout.write('\n')
+
+def image_bytes(b, filename=None, inline=1):
+    """
+    Return a bytes string that displays image given by bytes b in the terminal
+
+    If filename=None, the filename defaults to "Unnamed file"
+    """
     data = {
         'name': base64.b64encode((filename or 'Unnamed file').encode('utf-8')).decode('ascii'),
         'inline': inline,
@@ -39,14 +48,8 @@ def display_image_bytes(b, filename=None, inline=1, width='auto', height='auto')
         'width': width,
         'height': height,
         }
-    return (IMAGE_CODE.format(**data))
-
-# Backwards compatibility
-def image_bytes(b, filename=None, inline=1):
-    """
-    **DEPRECATED**: Use display_image_bytes.
-    """
-    return display_image_bytes(b, filename=filename, inline=inline)
+    # IMAGE_CODE is a string because bytes doesn't support formatting
+    return IMAGE_CODE.format(**data).encode('ascii')
 
 def display_image_file(fn):
     """
@@ -55,4 +58,4 @@ def display_image_file(fn):
     A newline is not printed.
     """
     with open(os.path.realpath(os.path.expanduser(fn)), 'rb') as f:
-        sys.stdout.write(display_image_bytes(f.read(), filename=fn))
+        sys.stdout.buffer.write(image_bytes(f.read(), filename=fn))

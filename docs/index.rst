@@ -11,7 +11,7 @@ iTerm2 tools for Python
 
 Some tools for working with iTerm2's proprietary escape codes in Python.
 
-Supports Python 2.7, 3.3, and 3.4.
+Supports Python 2.7, 3.4, 3.5, and 3.6.
 
 The source code is on `GitHub <https://github.com/asmeurer/iterm2-tools>`_.
 
@@ -42,6 +42,7 @@ Contents:
    shell_integration
    ipython
    examples
+   changelog
 
 Indices and tables
 ==================

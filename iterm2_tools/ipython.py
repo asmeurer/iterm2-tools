@@ -3,11 +3,6 @@ IPython shell integration extension
 
 Enables iTerm2 shell integration in the IPython shell.
 
-.. note::
-
-   This does not yet work with IPython 5.0. See
-   https://github.com/asmeurer/iterm2-tools/pull/6.
-
 To load, use::
 
     %load_ext iterm2_tools.ipython
@@ -89,6 +84,9 @@ from .shell_integration import (BEFORE_PROMPT, AFTER_PROMPT, before_output,
 global status
 status = 0
 
+def last_status(shell):
+    return AFTER_OUTPUT.format(command_status=(0 if shell.last_execution_succeeded else 1))
+
 @LazyEvaluate
 def ipython_after_output():
     global status
@@ -106,6 +104,47 @@ def exc_handler(self, etype, value, tb, tb_offset=None):
 # (despite what the IPython docs say), unless the user calls %reload_ext,
 # which does a full module reload, in which case they are on their own.
 def load_ipython_extension(ipython):
+    if hasattr(ipython, 'prompts'):
+        load_ipython_extension_prompt_toolkit(ipython)
+    else:
+        load_ipython_extension_readline(ipython)
+
+
+def wrap_prompts_class(Klass):
+    """
+    Wrap an IPython's Prompt class
+
+    This is needed in order for Prompt to inject the correct escape sequences
+    at the right positions for shell integrations.
+
+    """
+
+    try:
+        from prompt_toolkit.token import ZeroWidthEscape
+    except ImportError:
+        return Klass
+
+    class ITerm2IPythonPrompt(Klass):
+
+        def in_prompt_tokens(self, cli=None):
+            return  [
+                     (ZeroWidthEscape, last_status(self.shell)+BEFORE_PROMPT),
+                    ]+\
+                    super(ITerm2IPythonPrompt, self).in_prompt_tokens(cli)+\
+                    [(ZeroWidthEscape, AFTER_PROMPT)]
+
+
+    return ITerm2IPythonPrompt
+
+
+def load_ipython_extension_prompt_toolkit(ipython):
+
+    from IPython.terminal.prompts import Prompts
+    ipython.prompts = wrap_prompts_class(Prompts)(ipython)
+    ipython.events.register('pre_execute', before_output)
+
+
+def load_ipython_extension_readline(ipython):
     ipython.prompt_manager.lazy_evaluate_fields['before_prompt'] = readline_invisible(BEFORE_PROMPT)
     ipython.prompt_manager.lazy_evaluate_fields['after_prompt'] = readline_invisible(AFTER_PROMPT)
     ipython.prompt_manager.lazy_evaluate_fields['after_output'] = ipython_after_output

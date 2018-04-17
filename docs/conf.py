@@ -33,6 +33,7 @@ sys.path.insert(0, os.path.abspath('..'))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -78,7 +79,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ['_build', 'moved_docs']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -122,7 +123,10 @@ html_theme_options = {
     'github_repo': 'iterm2-tools',
     'github_banner': True,
     'logo_name': True,
+    'travis_button': True,
+    'show_related': True,
     }
+
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
@@ -145,7 +149,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
