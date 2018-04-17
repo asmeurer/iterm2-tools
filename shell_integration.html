@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Shell Integration &#8212; iTerm2 Tools 2.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '2.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -31,8 +23,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -53,14 +44,14 @@ what this lets you do in iTerm2.</p>
 <div class="section" id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
 <p>Say you have a basic REPL like:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="o">&gt;</span> <span class="n">run</span><span class="o">-</span><span class="n">command</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="o">&gt;</span> <span class="n">run</span><span class="o">-</span><span class="n">command</span>
 <span class="n">command</span> <span class="n">output</span>
 </pre></div>
 </div>
-<p>where <code class="docutils literal"><span class="pre">input&gt;</span></code> is the prompt, <code class="docutils literal"><span class="pre">run-command</span></code> is the command typed by the user,
-and <code class="docutils literal"><span class="pre">command</span> <span class="pre">output</span></code> is the output of <code class="docutils literal"><span class="pre">run-command</span></code>. The basic REPL (in Python
+<p>where <code class="docutils literal notranslate"><span class="pre">input&gt;</span></code> is the prompt, <code class="docutils literal notranslate"><span class="pre">run-command</span></code> is the command typed by the user,
+and <code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">output</span></code> is the output of <code class="docutils literal notranslate"><span class="pre">run-command</span></code>. The basic REPL (in Python
 3), would be:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">before_prompt</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input&gt; &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">after_prompt</span><span class="p">()</span>
@@ -70,14 +61,14 @@ and <code class="docutils literal"><span class="pre">command</span> <span class=
     <span class="n">after_output</span><span class="p">(</span><span class="n">return_val</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>(here <code class="docutils literal"><span class="pre">return_val</span></code> should be in the range 0-255).</p>
-<p>Note that it is recommended to use the functions (like <code class="docutils literal"><span class="pre">before_prompt()</span></code>) or the
-context managers (like <code class="docutils literal"><span class="pre">with</span> <span class="pre">Prompt()</span></code>) rather than the variables (like
-<code class="docutils literal"><span class="pre">BEFORE_PROMPT</span></code>) directly. These print the codes directly to stdout, avoiding
+<p>(here <code class="docutils literal notranslate"><span class="pre">return_val</span></code> should be in the range 0-255).</p>
+<p>Note that it is recommended to use the functions (like <code class="docutils literal notranslate"><span class="pre">before_prompt()</span></code>) or the
+context managers (like <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">Prompt()</span></code>) rather than the variables (like
+<code class="docutils literal notranslate"><span class="pre">BEFORE_PROMPT</span></code>) directly. These print the codes directly to stdout, avoiding
 potential issues with character counting.</p>
 <p>It may be preferable to use the context managers rather than the functions,
 in which case, the REPL would be:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="k">with</span> <span class="n">Prompt</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input&gt; &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="n">command</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span> <span class="c1"># raw_input() in Python 2</span>
@@ -87,10 +78,10 @@ in which case, the REPL would be:</p>
 </pre></div>
 </div>
 <p>However, in many cases, it is impossible to run functions before and after the
-prompt, e.g., when the prompt text is passed to <code class="docutils literal"><span class="pre">(raw_)input()</span></code> directly. In
+prompt, e.g., when the prompt text is passed to <code class="docutils literal notranslate"><span class="pre">(raw_)input()</span></code> directly. In
 that case, you should use the codes directly, wrapped with
-<code class="docutils literal"><span class="pre">readline_invisible()</span></code>, like:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<code class="docutils literal notranslate"><span class="pre">readline_invisible()</span></code>, like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">command</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span>
         <span class="n">readline_invisible</span><span class="p">(</span><span class="n">BEFORE_PROMPT</span><span class="p">)</span> <span class="o">+</span>
         <span class="s2">&quot;input&gt; &quot;</span> <span class="o">+</span>
@@ -101,7 +92,7 @@ that case, you should use the codes directly, wrapped with
         <span class="n">o</span><span class="o">.</span><span class="n">set_command_status</span><span class="p">(</span><span class="n">return_val</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using <code class="docutils literal"><span class="pre">readline_invisible()</span></code> is important as it tells readline to not count the
+<p>Using <code class="docutils literal notranslate"><span class="pre">readline_invisible()</span></code> is important as it tells readline to not count the
 codes as visible text. Without this, readline’s editing and history commands
 will truncate text.</p>
 <p>Notes about iTerm2:</p>
@@ -113,13 +104,13 @@ command. If there is no command, or the command is just whitespace, the
 output is effectively ignored (the same as if two before/after prompt
 sequences were performed without any output sequence).</li>
 <li>iTerm2 does  not support capturing  multiline commands, although  the output
-won’t  include  any part  of  the  command  if <code class="docutils literal"><span class="pre">before_output()</span></code>  is  used
+won’t  include  any part  of  the  command  if <code class="docutils literal notranslate"><span class="pre">before_output()</span></code>  is  used
 correctly.</li>
-<li>iTerm2 expects there to be nothing between <code class="docutils literal"><span class="pre">AFTER_OUTPUT</span></code> and
-<code class="docutils literal"><span class="pre">BEFORE_PROMPT</span></code>, except possibly more shell sequences. At the time of this
+<li>iTerm2 expects there to be nothing between <code class="docutils literal notranslate"><span class="pre">AFTER_OUTPUT</span></code> and
+<code class="docutils literal notranslate"><span class="pre">BEFORE_PROMPT</span></code>, except possibly more shell sequences. At the time of this
 writing, iTerm2’s “Select Output of Last Command” actually selects the text
-between <code class="docutils literal"><span class="pre">BEFORE_OUTPUT</span></code> and <code class="docutils literal"><span class="pre">BEFORE_PROMPT</span></code>, not <code class="docutils literal"><span class="pre">BEFORE_OUTPUT</span></code> and
-<code class="docutils literal"><span class="pre">AFTER_OUTPUT</span></code> as one would expect.</li>
+between <code class="docutils literal notranslate"><span class="pre">BEFORE_OUTPUT</span></code> and <code class="docutils literal notranslate"><span class="pre">BEFORE_PROMPT</span></code>, not <code class="docutils literal notranslate"><span class="pre">BEFORE_OUTPUT</span></code> and
+<code class="docutils literal notranslate"><span class="pre">AFTER_OUTPUT</span></code> as one would expect.</li>
 <li>Multiline prompts are supported just fine, although the arrow will always be
 presented on the first line. It is not recommended to attempt to change this
 by not including part of the prompt between the prompt sequences (see the
@@ -130,7 +121,7 @@ previous bullet point).</li>
 <em class="property">class </em><code class="descclassname">iterm2_tools.shell_integration.</code><code class="descname">Output</code><a class="reference internal" href="_modules/iterm2_tools/shell_integration.html#Output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.shell_integration.Output" title="Permalink to this definition">¶</a></dt>
 <dd><p>iTerm2 shell integration output context manager</p>
 <p>Use like:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Output</span><span class="p">()</span> <span class="k">as</span> <span class="n">o</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Output</span><span class="p">()</span> <span class="k">as</span> <span class="n">o</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
     <span class="n">o</span><span class="o">.</span><span class="n">set_command_status</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
 </pre></div>
@@ -143,7 +134,7 @@ previous bullet point).</li>
 <code class="descclassname">iterm2_tools.shell_integration.</code><code class="descname">Prompt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/shell_integration.html#Prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.shell_integration.Prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>iTerm2 shell integration prompt context manager</p>
 <p>Use like:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Prompt</span><span class="p">():</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Prompt</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Prompt:&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -153,7 +144,7 @@ previous bullet point).</li>
 <dt id="iterm2_tools.shell_integration.after_output">
 <code class="descclassname">iterm2_tools.shell_integration.</code><code class="descname">after_output</code><span class="sig-paren">(</span><em>command_status</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/shell_integration.html#after_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.shell_integration.after_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shell sequence to be run after the command output.</p>
-<p>The <code class="docutils literal"><span class="pre">command_status</span></code> should be in the range 0-255.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">command_status</span></code> should be in the range 0-255.</p>
 </dd></dl>
 
 <dl class="function">
@@ -177,7 +168,7 @@ previous bullet point).</li>
 <dl class="function">
 <dt id="iterm2_tools.shell_integration.readline_invisible">
 <code class="descclassname">iterm2_tools.shell_integration.</code><code class="descname">readline_invisible</code><span class="sig-paren">(</span><em>code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/shell_integration.html#readline_invisible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.shell_integration.readline_invisible" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrap <code class="docutils literal"><span class="pre">code</span></code> with the special characters to tell readline that it is
+<dd><p>Wrap <code class="docutils literal notranslate"><span class="pre">code</span></code> with the special characters to tell readline that it is
 invisible.</p>
 </dd></dl>
 
@@ -201,7 +192,7 @@ invisible.</p>
 <code class="descclassname">shell_integration.</code><code class="descname">BEFORE_OUTPUT</code><em class="property"> = '\x1b]133;C\x07'</em><a class="headerlink" href="#iterm2_tools.shell_integration.BEFORE_OUTPUT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p><code class="docutils literal"><span class="pre">command_status</span></code> is the command status, 0-255.</p>
+<p><code class="docutils literal notranslate"><span class="pre">command_status</span></code> is the command status, 0-255.</p>
 <dl class="attribute">
 <dt id="iterm2_tools.shell_integration.AFTER_OUTPUT">
 <code class="descclassname">shell_integration.</code><code class="descname">AFTER_OUTPUT</code><em class="property"> = '\x1b]133;D;{command_status}\x07'</em><a class="headerlink" href="#iterm2_tools.shell_integration.AFTER_OUTPUT" title="Permalink to this definition">¶</a></dt>
@@ -221,9 +212,9 @@ integration that comes with iTerm2.</p>
 <code class="descclassname">shell_integration.</code><code class="descname">SHELL_INTEGRATION_VERSION</code><em class="property"> = '\x1b]1337;ShellIntegrationVersion={shell_integration_version}\x07'</em><a class="headerlink" href="#iterm2_tools.shell_integration.SHELL_INTEGRATION_VERSION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p><code class="docutils literal"><span class="pre">REMOTE_HOST</span></code> and <code class="docutils literal"><span class="pre">CURRENT_DIR</span></code> are best echoed right after <code class="docutils literal"><span class="pre">AFTER_OUTPUT</span></code>.</p>
-<p><code class="docutils literal"><span class="pre">remote_host_hostname</span></code> should be the fully qualified hostname. Integrations
-should allow users to set <code class="docutils literal"><span class="pre">remote_host_hostname</span></code> in case DNS is slow.</p>
+<p><code class="docutils literal notranslate"><span class="pre">REMOTE_HOST</span></code> and <code class="docutils literal notranslate"><span class="pre">CURRENT_DIR</span></code> are best echoed right after <code class="docutils literal notranslate"><span class="pre">AFTER_OUTPUT</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">remote_host_hostname</span></code> should be the fully qualified hostname. Integrations
+should allow users to set <code class="docutils literal notranslate"><span class="pre">remote_host_hostname</span></code> in case DNS is slow.</p>
 <dl class="attribute">
 <dt id="iterm2_tools.shell_integration.REMOTE_HOST">
 <code class="descclassname">shell_integration.</code><code class="descname">REMOTE_HOST</code><em class="property"> = '\x1b]1337;RemoteHost={remote_host_username}&#64;{remote_host_hostname}\x07'</em><a class="headerlink" href="#iterm2_tools.shell_integration.REMOTE_HOST" title="Permalink to this definition">¶</a></dt>
@@ -272,12 +263,14 @@ should allow users to set <code class="docutils literal"><span class="pre">remot
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -288,7 +281,7 @@ should allow users to set <code class="docutils literal"><span class="pre">remot
       &copy;2015, Aaron Meurer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
