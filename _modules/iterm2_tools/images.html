@@ -63,14 +63,28 @@
 <span class="sd">    See https://www.iterm2.com/documentation-images.html</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="n">inline</span><span class="p">))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="n">inline</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">))</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.image_bytes">[docs]</a><span class="k">def</span> <span class="nf">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.image_bytes">[docs]</a><span class="k">def</span> <span class="nf">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a bytes string that displays image given by bytes b in the terminal</span>
 
 <span class="sd">    If filename=None, the filename defaults to &quot;Unnamed file&quot;</span>
+
+<span class="sd">    width and height are strings, following the format</span>
+
+<span class="sd">    N: N character cells.</span>
+
+<span class="sd">    Npx: N pixels.</span>
+
+<span class="sd">    N%: N percent of the session&#39;s width or height.</span>
+
+<span class="sd">    &#39;auto&#39;: The image&#39;s inherent size will be used to determine an appropriate</span>
+<span class="sd">            dimension (the default).</span>
+
+<span class="sd">    See https://www.iterm2.com/documentation-images.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">((</span><span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;Unnamed file&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span>

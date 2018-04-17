@@ -62,9 +62,18 @@
 
 <dl class="function">
 <dt id="iterm2_tools.images.image_bytes">
-<code class="descclassname">iterm2_tools.images.</code><code class="descname">image_bytes</code><span class="sig-paren">(</span><em>b</em>, <em>filename=None</em>, <em>inline=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/images.html#image_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.images.image_bytes" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">iterm2_tools.images.</code><code class="descname">image_bytes</code><span class="sig-paren">(</span><em>b</em>, <em>filename=None</em>, <em>inline=1</em>, <em>width='auto'</em>, <em>height='auto'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iterm2_tools/images.html#image_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iterm2_tools.images.image_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a bytes string that displays image given by bytes b in the terminal</p>
 <p>If filename=None, the filename defaults to “Unnamed file”</p>
+<p>width and height are strings, following the format</p>
+<p>N: N character cells.</p>
+<p>Npx: N pixels.</p>
+<p>N%: N percent of the session’s width or height.</p>
+<dl class="docutils">
+<dt>‘auto’: The image’s inherent size will be used to determine an appropriate</dt>
+<dd>dimension (the default).</dd>
+</dl>
+<p>See <a class="reference external" href="https://www.iterm2.com/documentation-images.html">https://www.iterm2.com/documentation-images.html</a></p>
 </dd></dl>
 
 </div>
