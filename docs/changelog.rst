@@ -10,6 +10,9 @@ CHANGELOG
 - **BACKWARDS INCOMPATIBLE CHANGE:** ``image_bytes`` now returns a bytes
   string in Python 3. To write this to stdout, use ``sys.stdout.buffer.write``,
   or use ``display_image_bytes`` on the image.
+- Add ``width``, ``height``, and ``preserve_aspect_ratio`` keyword arguments
+  to the image display functions. See
+  https://www.iterm2.com/documentation-images.html.
 - Fix IPython shell integration with the latest version of IPython (thanks
   @Carreau).
 - Remove Python 3.3 support
