@@ -41,33 +41,11 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 
-<span class="n">IMAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]1337;File=name=</span><span class="si">{name}</span><span class="s1">;inline=</span><span class="si">{inline}</span><span class="s1">;size=</span><span class="si">{size}</span><span class="s1">;width=</span><span class="si">{width}</span><span class="s1">;height=</span><span class="si">{height}</span><span class="s1">:</span><span class="si">{base64_img}</span><span class="se">\a</span><span class="s1">&#39;</span>
+<span class="n">IMAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">]1337;File=name=</span><span class="si">{name}</span><span class="s1">;inline=</span><span class="si">{inline}</span><span class="s1">;size=</span><span class="si">{size}</span><span class="s1">;width=</span><span class="si">{width}</span><span class="s1">;height=</span><span class="si">{height}</span><span class="s1">;preserveAspectRatio=</span><span class="si">{preserve_aspect_ratio}</span><span class="s1">:</span><span class="si">{base64_img}</span><span class="se">\a</span><span class="s1">&#39;</span>
 
-<div class="viewcode-block" id="display_image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.display_image_bytes">[docs]</a><span class="k">def</span> <span class="nf">display_image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Display the image given by the bytes b in the terminal.</span>
 
-<span class="sd">    If filename=None the filename defaults to &quot;Unnamed file&quot;.</span>
-
-<span class="sd">    width and height are strings, following the format</span>
-
-<span class="sd">    N: N character cells.</span>
-
-<span class="sd">    Npx: N pixels.</span>
-
-<span class="sd">    N%: N percent of the session&#39;s width or height.</span>
-
-<span class="sd">    &#39;auto&#39;: The image&#39;s inherent size will be used to determine an appropriate</span>
-<span class="sd">            dimension (the default).</span>
-
-<span class="sd">    See https://www.iterm2.com/documentation-images.html</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="n">inline</span><span class="p">,</span>
-        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">))</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.image_bytes">[docs]</a><span class="k">def</span> <span class="nf">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.image_bytes">[docs]</a><span class="k">def</span> <span class="nf">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+    <span class="n">preserve_aspect_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a bytes string that displays image given by bytes b in the terminal</span>
 
@@ -75,17 +53,26 @@
 
 <span class="sd">    width and height are strings, following the format</span>
 
-<span class="sd">    N: N character cells.</span>
+<span class="sd">        N: N character cells.</span>
 
-<span class="sd">    Npx: N pixels.</span>
+<span class="sd">        Npx: N pixels.</span>
 
-<span class="sd">    N%: N percent of the session&#39;s width or height.</span>
+<span class="sd">        N%: N percent of the session&#39;s width or height.</span>
 
-<span class="sd">    &#39;auto&#39;: The image&#39;s inherent size will be used to determine an appropriate</span>
-<span class="sd">            dimension (the default).</span>
+<span class="sd">        &#39;auto&#39;: The image&#39;s inherent size will be used to determine an appropriate</span>
+<span class="sd">                dimension.</span>
+
+<span class="sd">    preserve_aspect_ratio sets whether the aspect ratio of the image is</span>
+<span class="sd">    preserved. The default (None) is True unless both width and height are</span>
+<span class="sd">    set.</span>
 
 <span class="sd">    See https://www.iterm2.com/documentation-images.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">preserve_aspect_ratio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">width</span> <span class="o">!=</span> <span class="s1">&#39;auto&#39;</span> <span class="ow">and</span> <span class="n">height</span> <span class="o">!=</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+            <span class="n">preserve_aspect_ratio</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">preserve_aspect_ratio</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">((</span><span class="n">filename</span> <span class="ow">or</span> <span class="s1">&#39;Unnamed file&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span>
         <span class="s1">&#39;inline&#39;</span><span class="p">:</span> <span class="n">inline</span><span class="p">,</span>
@@ -93,18 +80,68 @@
         <span class="s1">&#39;base64_img&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span>
         <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">width</span><span class="p">,</span>
         <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">height</span><span class="p">,</span>
+        <span class="s1">&#39;preserve_aspect_ratio&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">preserve_aspect_ratio</span><span class="p">),</span>
         <span class="p">}</span>
     <span class="c1"># IMAGE_CODE is a string because bytes doesn&#39;t support formatting</span>
     <span class="k">return</span> <span class="n">IMAGE_CODE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="display_image_file"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.display_image_file">[docs]</a><span class="k">def</span> <span class="nf">display_image_file</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+<div class="viewcode-block" id="display_image_bytes"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.display_image_bytes">[docs]</a><span class="k">def</span> <span class="nf">display_image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">preserve_aspect_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display the image given by the bytes b in the terminal.</span>
+
+<span class="sd">    If filename=None the filename defaults to &quot;Unnamed file&quot;.</span>
+
+<span class="sd">    width and height are strings, following the format</span>
+
+<span class="sd">        N: N character cells.</span>
+
+<span class="sd">        Npx: N pixels.</span>
+
+<span class="sd">        N%: N percent of the session&#39;s width or height.</span>
+
+<span class="sd">        &#39;auto&#39;: The image&#39;s inherent size will be used to determine an appropriate</span>
+<span class="sd">                dimension.</span>
+
+<span class="sd">    preserve_aspect_ratio sets whether the aspect ratio of the image is</span>
+<span class="sd">    preserved. The default (None) is True unless both width and height are</span>
+<span class="sd">    set.</span>
+
+<span class="sd">    See https://www.iterm2.com/documentation-images.html</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="n">inline</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">preserve_aspect_ratio</span><span class="o">=</span><span class="n">preserve_aspect_ratio</span><span class="p">))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="display_image_file"><a class="viewcode-back" href="../../images.html#iterm2_tools.images.display_image_file">[docs]</a><span class="k">def</span> <span class="nf">display_image_file</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">preserve_aspect_ratio</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Display an image in the terminal.</span>
 
 <span class="sd">    A newline is not printed.</span>
+
+<span class="sd">    width and height are strings, following the format</span>
+
+<span class="sd">        N: N character cells.</span>
+
+<span class="sd">        Npx: N pixels.</span>
+
+<span class="sd">        N%: N percent of the session&#39;s width or height.</span>
+
+<span class="sd">        &#39;auto&#39;: The image&#39;s inherent size will be used to determine an appropriate</span>
+<span class="sd">                dimension.</span>
+
+<span class="sd">    preserve_aspect_ratio sets whether the aspect ratio of the image is</span>
+<span class="sd">    preserved. The default (None) is True unless both width and height are</span>
+<span class="sd">    set.</span>
+
+<span class="sd">    See https://www.iterm2.com/documentation-images.html</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">fn</span><span class="p">)),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">filename</span><span class="o">=</span><span class="n">fn</span><span class="p">))</span></div>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">filename</span><span class="o">=</span><span class="n">fn</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+            <span class="n">preserve_aspect_ratio</span><span class="o">=</span><span class="n">preserve_aspect_ratio</span><span class="p">))</span></div>
 </pre></div>
 
           </div>
@@ -140,7 +177,7 @@
       &copy;2015, Aaron Meurer.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
