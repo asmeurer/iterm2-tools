@@ -42,6 +42,9 @@ display.</li>
 <li><strong>BACKWARDS INCOMPATIBLE CHANGE:</strong> <code class="docutils literal notranslate"><span class="pre">image_bytes</span></code> now returns a bytes
 string in Python 3. To write this to stdout, use <code class="docutils literal notranslate"><span class="pre">sys.stdout.buffer.write</span></code>,
 or use <code class="docutils literal notranslate"><span class="pre">display_image_bytes</span></code> on the image.</li>
+<li>Add <code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>, and <code class="docutils literal notranslate"><span class="pre">preserve_aspect_ratio</span></code> keyword arguments
+to the image display functions. See
+<a class="reference external" href="https://www.iterm2.com/documentation-images.html">https://www.iterm2.com/documentation-images.html</a>.</li>
 <li>Fix IPython shell integration with the latest version of IPython (thanks
 &#64;Carreau).</li>
 <li>Remove Python 3.3 support</li>
