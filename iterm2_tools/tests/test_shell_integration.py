@@ -4,7 +4,7 @@ import sys
 
 from pytest import raises
 
-from iterm2_tools.shell_integration import (BEFORE_PROMPT, before_prompt,
+from ..shell_integration import (BEFORE_PROMPT, before_prompt,
     after_prompt, before_output, after_output, Prompt, Output,
     readline_invisible)
 

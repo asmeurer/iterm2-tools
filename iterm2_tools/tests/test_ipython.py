@@ -3,7 +3,7 @@ from __future__ import print_function, division, absolute_import
 import subprocess
 import re
 
-from iterm2_tools.shell_integration import (BEFORE_PROMPT, AFTER_PROMPT,
+from ..shell_integration import (BEFORE_PROMPT, AFTER_PROMPT,
     BEFORE_OUTPUT, AFTER_OUTPUT, readline_invisible)
 
 import IPython
